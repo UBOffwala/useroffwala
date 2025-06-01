@@ -88,16 +88,16 @@ export function Footer() {
                 Best Deals
               </Link>
               <Link
-                to="/?category=electronics"
+                to="/wishlist"
                 className="block text-gray-400 hover:text-white transition-colors"
               >
-                Electronics
+                My Wishlist
               </Link>
               <Link
-                to="/?category=fashion"
+                to="/profile"
                 className="block text-gray-400 hover:text-white transition-colors"
               >
-                Fashion
+                My Profile
               </Link>
             </div>
           </div>
