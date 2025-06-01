@@ -23,10 +23,10 @@ export const offers: Offer[] = [
     discount: 17,
     category: "electronics",
     images: [
-      "/api/placeholder/600/400",
-      "/api/placeholder/600/400",
-      "/api/placeholder/600/400",
-      "/api/placeholder/600/400",
+      "https://picsum.photos/600/400?random=1",
+      "https://picsum.photos/600/400?random=2",
+      "https://picsum.photos/600/400?random=3",
+      "https://picsum.photos/600/400?random=4"
     ],
     vendor: {
       name: "TechStore Pro",
@@ -59,9 +59,9 @@ export const offers: Offer[] = [
     discount: 40,
     category: "fashion",
     images: [
-      "/api/placeholder/600/400",
-      "/api/placeholder/600/400",
-      "/api/placeholder/600/400",
+      "https://picsum.photos/600/400?random=5",
+      "https://picsum.photos/600/400?random=6",
+      "https://picsum.photos/600/400?random=7"
     ],
     vendor: {
       name: "Fashion Elite",
@@ -93,8 +93,9 @@ export const offers: Offer[] = [
     discount: 36,
     category: "home",
     images: [
-      "/api/placeholder/600/400",
-      "/api/placeholder/600/400",
+      "https://picsum.photos/600/400?random=8",
+      "https://picsum.photos/600/400?random=9",
+      "https://picsum.photos/600/400?random=10"
       "/api/placeholder/600/400",
     ],
     vendor: {
