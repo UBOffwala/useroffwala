@@ -83,8 +83,6 @@ export default function CreateTicket() {
 
     try {
       const selectedOffer = formData.offerId && formData.offerId !== "none" ? offers.find(o => o.id === formData.offerId) : null;
-        ? offers.find((o) => o.id === formData.offerId)
-        : null;
 
       const ticketId = addTicket({
         title: formData.title,
