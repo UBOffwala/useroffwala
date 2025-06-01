@@ -57,7 +57,16 @@ export function Header() {
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger>Categories</NavigationMenuTrigger>
+                  <Link
+                    to="/categories"
+                    className="text-sm font-medium hover:text-[#1890ff] transition-colors"
+                  >
+                    Categories
+                  </Link>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger>Browse</NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <div className="w-96 p-6">
                       <div className="grid grid-cols-2 gap-4">
@@ -70,7 +79,7 @@ export function Header() {
                             <div className="flex items-center space-x-3">
                               <span className="text-2xl">{category.icon}</span>
                               <div>
-                                <div className="font-medium group-hover:text-blue-600 transition-colors">
+                                <div className="font-medium group-hover:text-[#1890ff] transition-colors">
                                   {category.name}
                                 </div>
                                 <div className="text-sm text-gray-500">
@@ -88,7 +97,7 @@ export function Header() {
                 <NavigationMenuItem>
                   <Link
                     to="/?featured=true"
-                    className="text-sm font-medium hover:text-blue-600 transition-colors"
+                    className="text-sm font-medium hover:text-[#1890ff] transition-colors"
                   >
                     Featured
                   </Link>
@@ -97,7 +106,7 @@ export function Header() {
                 <NavigationMenuItem>
                   <Link
                     to="/?new=true"
-                    className="text-sm font-medium hover:text-blue-600 transition-colors"
+                    className="text-sm font-medium hover:text-[#1890ff] transition-colors"
                   >
                     New Arrivals
                   </Link>
@@ -106,7 +115,7 @@ export function Header() {
                 <NavigationMenuItem>
                   <Link
                     to="/?discount=true"
-                    className="text-sm font-medium hover:text-blue-600 transition-colors"
+                    className="text-sm font-medium hover:text-[#1890ff] transition-colors"
                   >
                     Deals
                   </Link>
@@ -115,7 +124,7 @@ export function Header() {
                 <NavigationMenuItem>
                   <Link
                     to="/tickets"
-                    className="text-sm font-medium hover:text-blue-600 transition-colors"
+                    className="text-sm font-medium hover:text-[#1890ff] transition-colors"
                   >
                     Support
                   </Link>
