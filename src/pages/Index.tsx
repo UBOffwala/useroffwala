@@ -18,6 +18,9 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { OfferCard } from "@/components/OfferCard";
 import { CategoryFilter } from "@/components/CategoryFilter";
+import { PromoBannerSection } from "@/components/PromoBanner";
+import { CategoryGrid } from "@/components/CategoryGrid";
+import { TopDealsSection } from "@/components/TopDealsSection";
 import { filterOffers, searchOffers, getFeaturedOffers } from "@/lib/offers";
 import { categories, offers } from "@/data/offers";
 import { FilterOptions } from "@/types/offer";
@@ -89,7 +92,7 @@ export default function Index() {
         !featuredParam &&
         !newParam &&
         !discountParam && (
-          <section className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white">
+          <section className="bg-gradient-to-r from-[#1890ff] via-[#722ed1] to-[#eb2f96] text-white">
             <div className="container mx-auto px-4 py-16">
               <div className="text-center max-w-4xl mx-auto">
                 <h1 className="text-4xl md:text-6xl font-bold mb-6">
@@ -105,7 +108,7 @@ export default function Index() {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button
                     size="lg"
-                    className="bg-white text-blue-600 hover:bg-gray-100 text-lg px-8"
+                    className="bg-white text-[#1890ff] hover:bg-gray-100 text-lg px-8"
                   >
                     <Zap className="h-5 w-5 mr-2" />
                     Browse Featured
@@ -113,7 +116,7 @@ export default function Index() {
                   <Button
                     size="lg"
                     variant="outline"
-                    className="border-white text-white hover:bg-white hover:text-blue-600 text-lg px-8"
+                    className="border-white text-white hover:bg-white hover:text-[#1890ff] text-lg px-8"
                   >
                     <Gift className="h-5 w-5 mr-2" />
                     Best Deals
@@ -123,7 +126,6 @@ export default function Index() {
             </div>
           </section>
         )}
-
       {/* Quick Stats */}
       {!searchQuery &&
         !categoryParam &&
@@ -134,8 +136,8 @@ export default function Index() {
             <div className="container mx-auto px-4">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
                 <div className="flex items-center justify-center gap-3">
-                  <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                    <TrendingUp className="h-6 w-6 text-blue-600" />
+                  <div className="w-12 h-12 bg-[#1890ff]/10 rounded-full flex items-center justify-center">
+                    <TrendingUp className="h-6 w-6 text-[#1890ff]" />
                   </div>
                   <div>
                     <div className="text-2xl font-bold text-gray-900">
@@ -180,6 +182,24 @@ export default function Index() {
           </section>
         )}
 
+      {/* Promotional Banners - Only show on homepage */}
+      {!searchQuery &&
+        !categoryParam &&
+        !featuredParam &&
+        !newParam &&
+        !discountParam && (
+          <div className="container mx-auto px-4">
+            <PromoBannerSection />
+          </div>
+        )}
+
+      {/* Top Deals Section - Only show on homepage */}
+      {!searchQuery &&
+        !categoryParam &&
+        !featuredParam &&
+        !newParam &&
+        !discountParam && <TopDealsSection />}
+
       {/* Featured Offers - Only show on homepage */}
       {!searchQuery &&
         !categoryParam &&
@@ -217,41 +237,10 @@ export default function Index() {
         !featuredParam &&
         !newParam &&
         !discountParam && (
-          <section className="py-12 bg-white">
-            <div className="container mx-auto px-4">
-              <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-gray-900 mb-2">
-                  Browse by Category
-                </h2>
-                <p className="text-gray-600">
-                  Find exactly what you're looking for
-                </p>
-              </div>
-
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                {trendingCategories.map((category) => (
-                  <Card
-                    key={category.id}
-                    className="hover:shadow-lg transition-all duration-300 cursor-pointer group"
-                  >
-                    <CardContent className="p-6 text-center">
-                      <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">
-                        {category.icon}
-                      </div>
-                      <h3 className="font-semibold text-gray-900 mb-1">
-                        {category.name}
-                      </h3>
-                      <p className="text-sm text-gray-600">
-                        {category.count} offers
-                      </p>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </section>
+          <div className="bg-white">
+            <CategoryGrid />
+          </div>
         )}
-
       {/* Main Content Area */}
       <section className="py-8">
         <div className="container mx-auto px-4">
@@ -368,7 +357,7 @@ export default function Index() {
         !featuredParam &&
         !newParam &&
         !discountParam && (
-          <section className="py-16 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+          <section className="py-16 bg-gradient-to-r from-[#1890ff] to-[#722ed1] text-white">
             <div className="container mx-auto px-4 text-center">
               <h2 className="text-3xl font-bold mb-4">
                 Stay Updated with Latest Offers
@@ -383,7 +372,7 @@ export default function Index() {
                   placeholder="Enter your email"
                   className="flex-1 px-4 py-3 rounded-lg text-gray-900"
                 />
-                <Button className="bg-white text-blue-600 hover:bg-gray-100 px-6">
+                <Button className="bg-white text-[#1890ff] hover:bg-gray-100 px-6">
                   Subscribe
                 </Button>
               </div>
