@@ -111,6 +111,15 @@ export function Header() {
                     Deals
                   </Link>
                 </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <Link
+                    to="/tickets"
+                    className="text-sm font-medium hover:text-blue-600 transition-colors"
+                  >
+                    Support
+                  </Link>
+                </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
           </div>
@@ -235,9 +244,14 @@ export function Header() {
                       >
                         Best Deals
                       </Link>
+                      <Link
+                        to="/tickets"
+                        className="block p-2 hover:bg-gray-50 rounded-lg transition-colors"
+                      >
+                        Support & Tickets
+                      </Link>
                     </div>
                   </div>
-
                   <div className="border-t pt-4">
                     <div className="space-y-2">
                       <Link

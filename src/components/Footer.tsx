@@ -106,17 +106,23 @@ export function Footer() {
           <div className="space-y-4">
             <h3 className="font-semibold text-lg">Support</h3>
             <div className="space-y-2">
+              <Link
+                to="/tickets"
+                className="block text-gray-400 hover:text-white transition-colors"
+              >
+                Support Tickets
+              </Link>
+              <Link
+                to="/tickets/new"
+                className="block text-gray-400 hover:text-white transition-colors"
+              >
+                Contact Support
+              </Link>
               <a
                 href="#"
                 className="block text-gray-400 hover:text-white transition-colors"
               >
                 Help Center
-              </a>
-              <a
-                href="#"
-                className="block text-gray-400 hover:text-white transition-colors"
-              >
-                Contact Us
               </a>
               <a
                 href="#"
@@ -129,12 +135,6 @@ export function Footer() {
                 className="block text-gray-400 hover:text-white transition-colors"
               >
                 Buyer Protection
-              </a>
-              <a
-                href="#"
-                className="block text-gray-400 hover:text-white transition-colors"
-              >
-                Return Policy
               </a>
             </div>
           </div>
