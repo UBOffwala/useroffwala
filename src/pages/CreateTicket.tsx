@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -35,6 +35,7 @@ import { toast } from "sonner";
 
 export default function CreateTicket() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { addTicket } = useTickets();
   const { user } = useUser();
 
@@ -49,6 +50,22 @@ export default function CreateTicket() {
 
   const [customTag, setCustomTag] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Pre-fill form data from URL parameters
+  useEffect(() => {
+    const offerId = searchParams.get("offer");
+    if (offerId) {
+      const selectedOffer = offers.find((o) => o.id === offerId);
+      if (selectedOffer) {
+        setFormData((prev) => ({
+          ...prev,
+          offerId,
+          title: `Issue with ${selectedOffer.title}`,
+          category: "product-issue" as TicketCategory,
+        }));
+      }
+    }
+  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
