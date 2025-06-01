@@ -55,7 +55,7 @@ export default function TicketDetails() {
 
   const [newMessage, setNewMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [newStatus, setNewStatus] = useState<TicketStatus | "">("");
+  const [newStatus, setNewStatus] = useState<TicketStatus | "default">("default");
   const [satisfactionRating, setSatisfactionRating] = useState(0);
 
   if (!id) {
@@ -180,21 +180,25 @@ export default function TicketDetails() {
 
                 <Select
                   value={newStatus}
-                  onValueChange={(value: TicketStatus) => {
-                    setNewStatus(value);
-                    handleStatusChange(value);
+                  onValueChange={(value: TicketStatus | "default") => {
+                    if (value !== "default") {
+                      setNewStatus(value);
+                      handleStatusChange(value as TicketStatus);
+                    }
                   }}
                 >
                   <SelectTrigger className="w-40">
                     <SelectValue placeholder="Change Status" />
                   </SelectTrigger>
                   <SelectContent>
-                    {statusOptions.map((statusOption) => (
+                    <SelectItem value="default">Change Status</SelectItem>
+                    {statusOptions.map(statusOption => (
                       <SelectItem key={statusOption.id} value={statusOption.id}>
                         {statusOption.name}
                       </SelectItem>
                     ))}
                   </SelectContent>
+                </Select>
                 </Select>
               </div>
             )}
