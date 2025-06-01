@@ -13,7 +13,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 211 100% 53%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
@@ -134,11 +134,23 @@
 
   /* Gradient backgrounds */
   .bg-gradient-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #1890ff 0%, #722ed1 100%);
   }
 
   .bg-gradient-secondary {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    background: linear-gradient(135deg, #1890ff 0%, #13c2c2 100%);
+  }
+
+  .bg-primary-brand {
+    background: #1890ff;
+  }
+
+  .text-primary-brand {
+    color: #1890ff;
+  }
+
+  .border-primary-brand {
+    border-color: #1890ff;
   }
 
   /* Custom scrollbar */
