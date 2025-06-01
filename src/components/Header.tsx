@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { useWishlist } from "@/contexts/WishlistContext";
+import { useUser } from "@/contexts/UserContext";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -26,6 +28,8 @@ import { cn } from "@/lib/utils";
 export function Header() {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+  const { wishlistCount } = useWishlist();
+  const { user, isLoggedIn } = useUser();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -127,20 +131,37 @@ export function Header() {
 
           {/* Right Side Icons */}
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="icon" className="hidden md:flex">
-              <Heart className="h-5 w-5" />
-            </Button>
+            <Link to="/wishlist">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="relative hidden md:flex"
+              >
+                <Heart className="h-5 w-5" />
+                {wishlistCount > 0 && (
+                  <Badge className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 bg-red-500 text-xs">
+                    {wishlistCount}
+                  </Badge>
+                )}
+              </Button>
+            </Link>
 
-            <Button variant="ghost" size="icon" className="relative">
-              <ShoppingBag className="h-5 w-5" />
-              <Badge className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 bg-red-500 text-xs">
-                3
-              </Badge>
-            </Button>
+            <Link to="/wishlist">
+              <Button variant="ghost" size="icon" className="relative">
+                <ShoppingBag className="h-5 w-5" />
+                {wishlistCount > 0 && (
+                  <Badge className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 bg-red-500 text-xs">
+                    {wishlistCount}
+                  </Badge>
+                )}
+              </Button>
+            </Link>
 
-            <Button variant="ghost" size="icon">
-              <User className="h-5 w-5" />
-            </Button>
+            <Link to="/profile">
+              <Button variant="ghost" size="icon">
+                <User className="h-5 w-5" />
+              </Button>
+            </Link>
 
             {/* Mobile Menu */}
             <Sheet>
@@ -213,6 +234,37 @@ export function Header() {
                         className="block p-2 hover:bg-gray-50 rounded-lg transition-colors"
                       >
                         Best Deals
+                      </Link>
+                    </div>
+                  </div>
+
+                  <div className="border-t pt-4">
+                    <div className="space-y-2">
+                      <Link
+                        to="/wishlist"
+                        className="flex items-center space-x-3 p-2 hover:bg-gray-50 rounded-lg transition-colors"
+                      >
+                        <Heart className="h-5 w-5" />
+                        <div>
+                          <div className="font-medium">Wishlist</div>
+                          <div className="text-sm text-gray-500">
+                            {wishlistCount} saved items
+                          </div>
+                        </div>
+                      </Link>
+                      <Link
+                        to="/profile"
+                        className="flex items-center space-x-3 p-2 hover:bg-gray-50 rounded-lg transition-colors"
+                      >
+                        <User className="h-5 w-5" />
+                        <div>
+                          <div className="font-medium">My Profile</div>
+                          <div className="text-sm text-gray-500">
+                            {isLoggedIn
+                              ? `${user.firstName} ${user.lastName}`
+                              : "Account settings"}
+                          </div>
+                        </div>
                       </Link>
                     </div>
                   </div>

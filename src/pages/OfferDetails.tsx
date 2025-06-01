@@ -31,11 +31,12 @@ import { Footer } from "@/components/Footer";
 import { OfferCard } from "@/components/OfferCard";
 import { offers } from "@/data/offers";
 import { cn } from "@/lib/utils";
+import { useWishlist } from "@/contexts/WishlistContext";
 
 export default function OfferDetails() {
   const { id } = useParams<{ id: string }>();
-  const [isLiked, setIsLiked] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
 
   if (!id) {
     return <Navigate to="/404" replace />;
@@ -46,6 +47,16 @@ export default function OfferDetails() {
   if (!offer) {
     return <Navigate to="/404" replace />;
   }
+
+  const isLiked = isInWishlist(offer.id);
+
+  const handleToggleWishlist = () => {
+    if (isLiked) {
+      removeFromWishlist(offer.id);
+    } else {
+      addToWishlist(offer);
+    }
+  };
 
   const relatedOffers = offers
     .filter((o) => o.id !== offer.id && o.category === offer.category)
@@ -121,8 +132,14 @@ export default function OfferDetails() {
                     variant="secondary"
                     size="icon"
                     className="bg-white/90 hover:bg-white"
+                    onClick={handleToggleWishlist}
                   >
-                    <Share2 className="h-4 w-4 text-gray-600" />
+                    <Heart
+                      className={cn(
+                        "h-4 w-4",
+                        isLiked ? "fill-red-500 text-red-500" : "text-gray-600",
+                      )}
+                    />
                   </Button>
                 </div>
               </div>
@@ -335,9 +352,18 @@ export default function OfferDetails() {
                     <ShoppingBag className="h-5 w-5 mr-2" />
                     Contact Seller
                   </Button>
-                  <Button variant="outline" className="w-full h-12">
-                    <Heart className="h-5 w-5 mr-2" />
-                    Save to Wishlist
+                  <Button
+                    variant="outline"
+                    className="w-full h-12"
+                    onClick={handleToggleWishlist}
+                  >
+                    <Heart
+                      className={cn(
+                        "h-5 w-5 mr-2",
+                        isLiked && "fill-current text-red-500",
+                      )}
+                    />
+                    {isLiked ? "Remove from Wishlist" : "Save to Wishlist"}
                   </Button>
                 </div>
 

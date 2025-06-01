@@ -6,7 +6,7 @@ import { Offer } from "@/types/offer";
 import { formatPrice, getDiscountPercentage } from "@/lib/offers";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useWishlist } from "@/contexts/WishlistContext";
 
 interface OfferCardProps {
   offer: Offer;
@@ -14,7 +14,16 @@ interface OfferCardProps {
 }
 
 export function OfferCard({ offer, className }: OfferCardProps) {
-  const [isLiked, setIsLiked] = useState(false);
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+  const isLiked = isInWishlist(offer.id);
+
+  const handleToggleWishlist = () => {
+    if (isLiked) {
+      removeFromWishlist(offer.id);
+    } else {
+      addToWishlist(offer);
+    }
+  };
 
   return (
     <Card
@@ -59,7 +68,7 @@ export function OfferCard({ offer, className }: OfferCardProps) {
             "absolute top-3 right-3 bg-white/80 hover:bg-white",
             isLiked ? "text-red-500" : "text-gray-600",
           )}
-          onClick={() => setIsLiked(!isLiked)}
+          onClick={handleToggleWishlist}
         >
           <Heart className={cn("h-4 w-4", isLiked && "fill-current")} />
         </Button>
