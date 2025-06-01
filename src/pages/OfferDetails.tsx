@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import { getOfferById, formatPrice } from "@/lib/offers";
 import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 import { OfferCard } from "@/components/OfferCard";
 import { offers } from "@/data/offers";
 import { cn } from "@/lib/utils";
@@ -389,6 +390,8 @@ export default function OfferDetails() {
           </div>
         )}
       </div>
+
+      <Footer />
     </div>
   );
 }

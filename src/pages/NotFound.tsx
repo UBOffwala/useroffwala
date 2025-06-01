@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft, Home, Search } from "lucide-react";
 import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 
 const NotFound = () => {
   return (
@@ -52,6 +53,8 @@ const NotFound = () => {
           </Card>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 };

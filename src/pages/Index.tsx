@@ -15,6 +15,7 @@ import {
   List,
 } from "lucide-react";
 import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 import { OfferCard } from "@/components/OfferCard";
 import { CategoryFilter } from "@/components/CategoryFilter";
 import { filterOffers, searchOffers, getFeaturedOffers } from "@/lib/offers";
@@ -389,6 +390,8 @@ export default function Index() {
             </div>
           </section>
         )}
+
+      <Footer />
     </div>
   );
 }
