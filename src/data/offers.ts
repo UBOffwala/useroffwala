@@ -128,9 +128,9 @@ export const offers: Offer[] = [
     discount: 33,
     category: "electronics",
     images: [
-      "/api/placeholder/600/400",
-      "/api/placeholder/600/400",
-      "/api/placeholder/600/400",
+      "https://picsum.photos/600/400?random=11",
+      "https://picsum.photos/600/400?random=12",
+      "https://picsum.photos/600/400?random=13",
     ],
     vendor: {
       name: "Gaming Paradise",
@@ -163,9 +163,9 @@ export const offers: Offer[] = [
     discount: 35,
     category: "fashion",
     images: [
-      "/api/placeholder/600/400",
-      "/api/placeholder/600/400",
-      "/api/placeholder/600/400",
+      "https://picsum.photos/600/400?random=14",
+      "https://picsum.photos/600/400?random=15",
+      "https://picsum.photos/600/400?random=16",
     ],
     vendor: {
       name: "Timepiece Masters",
@@ -198,9 +198,9 @@ export const offers: Offer[] = [
     discount: 42,
     category: "sports",
     images: [
-      "/api/placeholder/600/400",
-      "/api/placeholder/600/400",
-      "/api/placeholder/600/400",
+      "https://picsum.photos/600/400?random=17",
+      "https://picsum.photos/600/400?random=18",
+      "https://picsum.photos/600/400?random=19",
     ],
     vendor: {
       name: "FitLife Pro",
@@ -233,9 +233,9 @@ export const offers: Offer[] = [
     discount: 36,
     category: "automotive",
     images: [
-      "/api/placeholder/600/400",
-      "/api/placeholder/600/400",
-      "/api/placeholder/600/400",
+      "https://picsum.photos/600/400?random=20",
+      "https://picsum.photos/600/400?random=21",
+      "https://picsum.photos/600/400?random=22",
     ],
     vendor: {
       name: "Classic Auto Restorations",
