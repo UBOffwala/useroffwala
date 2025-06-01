@@ -277,9 +277,12 @@ export default function Profile() {
                   <div className="space-y-2">
                     <Label htmlFor="gender">Gender</Label>
                     <Select
-                      value={formData.gender || ""}
+                      value={formData.gender || "not-selected"}
                       onValueChange={(value) =>
-                        handleInputChange("gender", value)
+                        handleInputChange(
+                          "gender",
+                          value === "not-selected" ? "" : value,
+                        )
                       }
                       disabled={!isEditing}
                     >
@@ -287,6 +290,9 @@ export default function Profile() {
                         <SelectValue placeholder="Select gender" />
                       </SelectTrigger>
                       <SelectContent>
+                        <SelectItem value="not-selected">
+                          Select gender
+                        </SelectItem>
                         <SelectItem value="male">Male</SelectItem>
                         <SelectItem value="female">Female</SelectItem>
                         <SelectItem value="other">Other</SelectItem>
