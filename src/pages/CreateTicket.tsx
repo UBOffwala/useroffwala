@@ -44,7 +44,7 @@ export default function CreateTicket() {
     description: "",
     category: "" as TicketCategory | "",
     priority: "medium" as TicketPriority,
-    offerId: "",
+    offerId: "none",
     tags: [] as string[],
   });
 
@@ -82,7 +82,10 @@ export default function CreateTicket() {
     setIsSubmitting(true);
 
     try {
-      const selectedOffer = formData.offerId && formData.offerId !== "none" ? offers.find(o => o.id === formData.offerId) : null;
+      const selectedOffer =
+        formData.offerId && formData.offerId !== "none"
+          ? offers.find((o) => o.id === formData.offerId)
+          : null;
 
       const ticketId = addTicket({
         title: formData.title,
@@ -95,7 +98,9 @@ export default function CreateTicket() {
         userEmail: user.email,
         offerId: selectedOffer?.id || undefined,
         offerTitle: selectedOffer?.title || undefined,
-        sellerId: selectedOffer ? selectedOffer.vendor.name.toLowerCase().replace(/\s+/g, '-') : undefined,
+        sellerId: selectedOffer
+          ? selectedOffer.vendor.name.toLowerCase().replace(/\s+/g, "-")
+          : undefined,
         sellerName: selectedOffer?.vendor.name || undefined,
         tags: formData.tags.length > 0 ? formData.tags : undefined,
       });
@@ -213,9 +218,11 @@ export default function CreateTicket() {
                             </div>
                           </SelectItem>
                         ))}
-                      <SelectContent>
-                        <SelectItem value="none">No related offer</SelectItem>
-                        {offers.map(offer => (
+                      </SelectContent>
+                    </Select>
+                    {selectedCategory && (
+                      <p className="text-sm text-gray-600">
+                        {selectedCategory.description}
                       </p>
                     )}
                   </div>
@@ -265,7 +272,7 @@ export default function CreateTicket() {
                         <SelectValue placeholder="Select related offer if applicable" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">No related offer</SelectItem>
+                        <SelectItem value="none">No related offer</SelectItem>
                         {offers.map((offer) => (
                           <SelectItem key={offer.id} value={offer.id}>
                             <div className="flex items-center gap-2">
