@@ -33,6 +33,7 @@ import {
 } from "lucide-react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { TicketSummary } from "@/components/TicketSummary";
 import { useUser } from "@/contexts/UserContext";
 import { UserProfile } from "@/types/user";
 import { cn } from "@/lib/utils";
@@ -173,10 +174,11 @@ export default function Profile() {
 
         {/* Profile Content */}
         <Tabs defaultValue="personal" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="personal">Personal Info</TabsTrigger>
             <TabsTrigger value="address">Address</TabsTrigger>
             <TabsTrigger value="preferences">Preferences</TabsTrigger>
+            <TabsTrigger value="support">Support</TabsTrigger>
           </TabsList>
 
           {/* Personal Information Tab */}
@@ -558,6 +560,11 @@ export default function Profile() {
                 )}
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Support Tab */}
+          <TabsContent value="support" className="space-y-6">
+            <TicketSummary />
           </TabsContent>
         </Tabs>
       </div>
