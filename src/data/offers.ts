@@ -268,9 +268,9 @@ export const offers: Offer[] = [
     discount: 33,
     category: "beauty",
     images: [
-      "/api/placeholder/600/400",
-      "/api/placeholder/600/400",
-      "/api/placeholder/600/400",
+      "https://picsum.photos/600/400?random=23",
+      "https://picsum.photos/600/400?random=24",
+      "https://picsum.photos/600/400?random=25",
     ],
     vendor: {
       name: "Beauty Luxe",
