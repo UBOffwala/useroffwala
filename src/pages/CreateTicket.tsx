@@ -82,7 +82,7 @@ export default function CreateTicket() {
     setIsSubmitting(true);
 
     try {
-      const selectedOffer = formData.offerId
+      const selectedOffer = formData.offerId && formData.offerId !== "none" ? offers.find(o => o.id === formData.offerId) : null;
         ? offers.find((o) => o.id === formData.offerId)
         : null;
 
@@ -95,10 +95,10 @@ export default function CreateTicket() {
         userId: user.id,
         userName: `${user.firstName} ${user.lastName}`,
         userEmail: user.email,
-        offerId: selectedOffer?.id,
-        offerTitle: selectedOffer?.title,
-        sellerId: selectedOffer?.vendor.name.toLowerCase().replace(/\s+/g, "-"),
-        sellerName: selectedOffer?.vendor.name,
+        offerId: selectedOffer?.id || undefined,
+        offerTitle: selectedOffer?.title || undefined,
+        sellerId: selectedOffer ? selectedOffer.vendor.name.toLowerCase().replace(/\s+/g, '-') : undefined,
+        sellerName: selectedOffer?.vendor.name || undefined,
         tags: formData.tags.length > 0 ? formData.tags : undefined,
       });
 
@@ -215,11 +215,9 @@ export default function CreateTicket() {
                             </div>
                           </SelectItem>
                         ))}
-                      </SelectContent>
-                    </Select>
-                    {selectedCategory && (
-                      <p className="text-sm text-gray-600">
-                        {selectedCategory.description}
+                      <SelectContent>
+                        <SelectItem value="none">No related offer</SelectItem>
+                        {offers.map(offer => (
                       </p>
                     )}
                   </div>
