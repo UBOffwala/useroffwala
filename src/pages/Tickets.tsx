@@ -125,7 +125,7 @@ export default function Tickets() {
             )}
 
             <Link to="/tickets/new">
-              <Button className="gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+              <Button className="gap-2 bg-gradient-to-r from-[#1890ff] to-[#722ed1] hover:from-[#1890ff]/90 hover:to-[#722ed1]/90">
                 <Plus className="h-4 w-4" />
                 New Ticket
               </Button>

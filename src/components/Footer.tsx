@@ -21,10 +21,10 @@ export function Footer() {
           {/* Brand Section */}
           <div className="space-y-4">
             <Link to="/" className="flex items-center space-x-2">
-              <div className="h-8 w-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+              <div className="h-8 w-8 bg-gradient-to-r from-[#1890ff] to-[#722ed1] rounded-lg flex items-center justify-center">
                 <ShoppingBag className="h-5 w-5 text-white" />
               </div>
-              <span className="font-bold text-xl bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+              <span className="font-bold text-xl bg-gradient-to-r from-[#1890ff] to-[#722ed1] bg-clip-text text-transparent">
                 OfferHub
               </span>
             </Link>
@@ -165,7 +165,7 @@ export function Footer() {
                   placeholder="Your email"
                   className="bg-gray-800 border-gray-700 text-white placeholder-gray-400"
                 />
-                <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                <Button className="bg-gradient-to-r from-[#1890ff] to-[#722ed1] hover:from-[#1890ff]/90 hover:to-[#722ed1]/90">
                   Subscribe
                 </Button>
               </div>

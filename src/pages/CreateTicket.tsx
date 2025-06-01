@@ -355,7 +355,7 @@ export default function CreateTicket() {
                     <Button
                       type="submit"
                       disabled={isSubmitting}
-                      className="gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                      className="gap-2 bg-gradient-to-r from-[#1890ff] to-[#722ed1] hover:from-[#1890ff]/90 hover:to-[#722ed1]/90"
                     >
                       {isSubmitting ? (
                         <>
