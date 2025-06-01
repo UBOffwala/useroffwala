@@ -145,7 +145,7 @@ export function OfferCard({ offer, className }: OfferCardProps) {
 
       <CardFooter className="p-4 pt-0">
         <Link to={`/offer/${offer.id}`} className="w-full">
-          <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+          <Button className="w-full bg-gradient-to-r from-[#1890ff] to-[#722ed1] hover:from-[#1890ff]/90 hover:to-[#722ed1]/90">
             View Details
           </Button>
         </Link>

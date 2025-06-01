@@ -173,7 +173,7 @@ export default function Wishlist() {
 
               <div className="space-y-4">
                 <Link to="/">
-                  <Button className="gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                  <Button className="gap-2 bg-gradient-to-r from-[#1890ff] to-[#722ed1] hover:from-[#1890ff]/90 hover:to-[#722ed1]/90">
                     <ShoppingBag className="h-4 w-4" />
                     Browse Offers
                   </Button>
@@ -370,7 +370,7 @@ export default function Wishlist() {
                     </Button>
                   </Link>
                   <Link to="/">
-                    <Button className="gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                    <Button className="gap-2 bg-gradient-to-r from-[#1890ff] to-[#722ed1] hover:from-[#1890ff]/90 hover:to-[#722ed1]/90">
                       Browse All <ArrowRight className="h-4 w-4" />
                     </Button>
                   </Link>

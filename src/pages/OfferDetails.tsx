@@ -361,7 +361,7 @@ export default function OfferDetails() {
 
                 {/* Action Buttons */}
                 <div className="space-y-3 mb-6">
-                  <Button className="w-full h-12 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-lg">
+                  <Button className="w-full h-12 bg-gradient-to-r from-[#1890ff] to-[#722ed1] hover:from-[#1890ff]/90 hover:to-[#722ed1]/90 text-lg">
                     <ShoppingBag className="h-5 w-5 mr-2" />
                     Contact Seller
                   </Button>

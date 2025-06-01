@@ -10,6 +10,7 @@ import Index from "./pages/Index";
 import OfferDetails from "./pages/OfferDetails";
 import Profile from "./pages/Profile";
 import Wishlist from "./pages/Wishlist";
+import Categories from "./pages/Categories";
 import Tickets from "./pages/Tickets";
 import CreateTicket from "./pages/CreateTicket";
 import TicketDetails from "./pages/TicketDetails";
@@ -31,6 +32,7 @@ const App = () => (
                 <Route path="/offer/:id" element={<OfferDetails />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/wishlist" element={<Wishlist />} />
+                <Route path="/categories" element={<Categories />} />
                 <Route path="/tickets" element={<Tickets />} />
                 <Route path="/tickets/new" element={<CreateTicket />} />
                 <Route path="/tickets/:id" element={<TicketDetails />} />
