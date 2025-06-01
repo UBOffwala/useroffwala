@@ -129,18 +129,31 @@ export default function OfferDetails() {
                     />
                   </Button>
                   <Button
-                    variant="secondary"
-                    size="icon"
-                    className="bg-white/90 hover:bg-white"
+                    variant="outline"
+                    className="w-full h-12"
                     onClick={handleToggleWishlist}
                   >
                     <Heart
                       className={cn(
-                        "h-4 w-4",
-                        isLiked ? "fill-red-500 text-red-500" : "text-gray-600",
+                        "h-5 w-5 mr-2",
+                        isLiked && "fill-current text-red-500",
                       )}
                     />
+                    {isLiked ? "Remove from Wishlist" : "Save to Wishlist"}
                   </Button>
+
+                  <Link
+                    to={`/tickets/new?offer=${offer.id}`}
+                    className="w-full"
+                  >
+                    <Button
+                      variant="ghost"
+                      className="w-full h-12 text-gray-600 hover:text-gray-700"
+                    >
+                      <MessageSquare className="h-5 w-5 mr-2" />
+                      Report Issue
+                    </Button>
+                  </Link>
                 </div>
               </div>
 
