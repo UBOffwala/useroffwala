@@ -1,0 +1,227 @@
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { Search, Menu, Heart, ShoppingBag, User } from "lucide-react";
+import { categories } from "@/data/offers";
+import { cn } from "@/lib/utils";
+
+export function Header() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/?search=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
+
+  return (
+    <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+      <div className="container mx-auto px-4">
+        <div className="flex h-16 items-center justify-between">
+          {/* Logo */}
+          <Link to="/" className="flex items-center space-x-2">
+            <div className="h-8 w-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+              <ShoppingBag className="h-5 w-5 text-white" />
+            </div>
+            <span className="font-bold text-xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              OfferHub
+            </span>
+          </Link>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-6">
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger>Categories</NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <div className="w-96 p-6">
+                      <div className="grid grid-cols-2 gap-4">
+                        {categories.map((category) => (
+                          <Link
+                            key={category.id}
+                            to={`/?category=${category.id}`}
+                            className="group block p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                          >
+                            <div className="flex items-center space-x-3">
+                              <span className="text-2xl">{category.icon}</span>
+                              <div>
+                                <div className="font-medium group-hover:text-blue-600 transition-colors">
+                                  {category.name}
+                                </div>
+                                <div className="text-sm text-gray-500">
+                                  {category.count} offers
+                                </div>
+                              </div>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <Link
+                    to="/?featured=true"
+                    className="text-sm font-medium hover:text-blue-600 transition-colors"
+                  >
+                    Featured
+                  </Link>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <Link
+                    to="/?new=true"
+                    className="text-sm font-medium hover:text-blue-600 transition-colors"
+                  >
+                    New Arrivals
+                  </Link>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <Link
+                    to="/?discount=true"
+                    className="text-sm font-medium hover:text-blue-600 transition-colors"
+                  >
+                    Deals
+                  </Link>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+          </div>
+
+          {/* Search Bar */}
+          <div className="flex-1 max-w-2xl mx-8 hidden md:block">
+            <form onSubmit={handleSearch} className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Input
+                type="text"
+                placeholder="Search for offers, brands, categories..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 pr-4 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </form>
+          </div>
+
+          {/* Right Side Icons */}
+          <div className="flex items-center space-x-4">
+            <Button variant="ghost" size="icon" className="hidden md:flex">
+              <Heart className="h-5 w-5" />
+            </Button>
+
+            <Button variant="ghost" size="icon" className="relative">
+              <ShoppingBag className="h-5 w-5" />
+              <Badge className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 bg-red-500 text-xs">
+                3
+              </Badge>
+            </Button>
+
+            <Button variant="ghost" size="icon">
+              <User className="h-5 w-5" />
+            </Button>
+
+            {/* Mobile Menu */}
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="md:hidden">
+                  <Menu className="h-5 w-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-80">
+                <SheetHeader>
+                  <SheetTitle className="text-left">Menu</SheetTitle>
+                  <SheetDescription className="text-left">
+                    Browse categories and offers
+                  </SheetDescription>
+                </SheetHeader>
+
+                {/* Mobile Search */}
+                <div className="my-6">
+                  <form onSubmit={handleSearch} className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                    <Input
+                      type="text"
+                      placeholder="Search offers..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-10"
+                    />
+                  </form>
+                </div>
+
+                {/* Mobile Categories */}
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="font-semibold mb-3">Categories</h3>
+                    <div className="space-y-2">
+                      {categories.map((category) => (
+                        <Link
+                          key={category.id}
+                          to={`/?category=${category.id}`}
+                          className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-50 transition-colors"
+                        >
+                          <span className="text-xl">{category.icon}</span>
+                          <div>
+                            <div className="font-medium">{category.name}</div>
+                            <div className="text-sm text-gray-500">
+                              {category.count} offers
+                            </div>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="border-t pt-4">
+                    <div className="space-y-2">
+                      <Link
+                        to="/?featured=true"
+                        className="block p-2 hover:bg-gray-50 rounded-lg transition-colors"
+                      >
+                        Featured Offers
+                      </Link>
+                      <Link
+                        to="/?new=true"
+                        className="block p-2 hover:bg-gray-50 rounded-lg transition-colors"
+                      >
+                        New Arrivals
+                      </Link>
+                      <Link
+                        to="/?discount=true"
+                        className="block p-2 hover:bg-gray-50 rounded-lg transition-colors"
+                      >
+                        Best Deals
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+}
