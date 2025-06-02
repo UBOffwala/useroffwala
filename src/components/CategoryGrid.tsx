@@ -45,11 +45,17 @@ function CategoryCard({ category, className }: CategoryCardProps) {
   return (
     <Link to={`/categories?selected=${category.id}`}>
       <Card
-        className={cn(
-          "group hover:shadow-xl hover:shadow-[#1890ff]/10 transition-all duration-300 cursor-pointer overflow-hidden",
-          "hover:border-[#1890ff]/30 hover:-translate-y-1 h-32",
-          className,
-        )}
+      <Card className={cn(
+        "group hover:shadow-2xl hover:shadow-[#1890ff]/15 transition-all duration-500 cursor-pointer overflow-hidden",
+        "hover:border-[#1890ff]/40 hover:-translate-y-2 h-32 border-2 border-gray-100",
+        "category-card backdrop-blur-sm",
+        className
+      )}>
+        <CardContent className={cn(
+          "p-6 h-full relative transition-all duration-300",
+          colorScheme.bg,
+          "group-hover:border-[#1890ff]/30"
+        )}>
       >
         <CardContent
           className={cn(
@@ -59,18 +65,18 @@ function CategoryCard({ category, className }: CategoryCardProps) {
           )}
         >
           <div className="h-full flex flex-col items-center justify-center text-center">
-            <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300">
+            <div className="text-3xl mb-3 group-hover:scale-125 transition-all duration-500 drop-shadow-sm">
               {category.icon}
             </div>
-            <h3 className="font-semibold text-gray-900 group-hover:text-[#1890ff] transition-colors duration-300 text-sm">
+            <h3 className="font-semibold text-gray-900 group-hover:text-[#1890ff] transition-colors duration-300 text-sm leading-tight">
               {category.name}
             </h3>
-            <p className="text-gray-600 mt-1 font-medium text-xs">
+            <p className="text-gray-600 mt-2 font-medium text-xs group-hover:text-gray-700 transition-colors">
               {category.count} offers
             </p>
 
             {/* Decorative element */}
-            <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-8 h-1 rounded-full transition-all duration-300 bg-gray-200 group-hover:bg-[#1890ff] group-hover:w-12" />
+            <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 w-8 h-1 rounded-full transition-all duration-500 bg-gray-200 group-hover:bg-gradient-to-r group-hover:from-[#1890ff] group-hover:to-[#722ed1] group-hover:w-16 group-hover:shadow-lg" />
           </div>
 
           {/* Trending badge for popular categories */}
@@ -102,27 +108,21 @@ export function CategoryGrid({
   return (
     <section className={cn("py-12 bg-white", className)}>
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-10">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">{title}</h2>
-            <p className="text-gray-600">
-              Find exactly what you're looking for
-            </p>
+            <h2 className="text-3xl font-bold text-gray-900 mb-3">{title}</h2>
+            <p className="text-gray-600 text-lg">Find exactly what you're looking for</p>
           </div>
 
           {!showAll && (
             <Link to="/categories">
-              <Button
-                variant="outline"
-                className="gap-2 hover:border-[#1890ff] hover:text-[#1890ff] hover:bg-[#1890ff]/5"
-              >
+              <Button variant="outline" className="gap-2 hover:border-[#1890ff] hover:text-[#1890ff] hover:bg-[#1890ff]/5 transition-all duration-300">
                 View All Categories
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
           )}
         </div>
-
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
           {displayCategories.map((category) => (
             <CategoryCard key={category.id} category={category} />
