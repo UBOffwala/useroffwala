@@ -44,7 +44,6 @@ function CategoryCard({ category, className }: CategoryCardProps) {
 
   return (
     <Link to={`/categories?selected=${category.id}`}>
-      <Card
       <Card className={cn(
         "group hover:shadow-2xl hover:shadow-[#1890ff]/15 transition-all duration-500 cursor-pointer overflow-hidden",
         "hover:border-[#1890ff]/40 hover:-translate-y-2 h-32 border-2 border-gray-100",
