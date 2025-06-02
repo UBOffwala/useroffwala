@@ -259,7 +259,8 @@ export function HorizontalBanners() {
 
   const checkScrollButtons = () => {
     if (scrollContainerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      const { scrollLeft, scrollWidth, clientWidth } =
+        scrollContainerRef.current;
       setCanScrollLeft(scrollLeft > 0);
       setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
 
@@ -270,17 +271,18 @@ export function HorizontalBanners() {
     }
   };
 
-  const scroll = (direction: 'left' | 'right') => {
+  const scroll = (direction: "left" | "right") => {
     if (scrollContainerRef.current) {
       setIsAutoScrolling(false);
       const scrollAmount = 340; // Width of one banner + gap
-      const newScrollLeft = direction === 'left'
-        ? scrollContainerRef.current.scrollLeft - scrollAmount
-        : scrollContainerRef.current.scrollLeft + scrollAmount;
+      const newScrollLeft =
+        direction === "left"
+          ? scrollContainerRef.current.scrollLeft - scrollAmount
+          : scrollContainerRef.current.scrollLeft + scrollAmount;
 
       scrollContainerRef.current.scrollTo({
         left: newScrollLeft,
-        behavior: 'smooth'
+        behavior: "smooth",
       });
 
       // Resume auto-scroll after 10 seconds
@@ -294,7 +296,7 @@ export function HorizontalBanners() {
       const scrollAmount = 340 * index;
       scrollContainerRef.current.scrollTo({
         left: scrollAmount,
-        behavior: 'smooth'
+        behavior: "smooth",
       });
 
       // Resume auto-scroll after 10 seconds
@@ -308,15 +310,16 @@ export function HorizontalBanners() {
 
     const interval = setInterval(() => {
       if (scrollContainerRef.current) {
-        const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+        const { scrollLeft, scrollWidth, clientWidth } =
+          scrollContainerRef.current;
         const maxScroll = scrollWidth - clientWidth;
 
         if (scrollLeft >= maxScroll - 10) {
           // Reset to beginning
-          scrollContainerRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+          scrollContainerRef.current.scrollTo({ left: 0, behavior: "smooth" });
         } else {
           // Scroll to next banner
-          scroll('right');
+          scroll("right");
         }
       }
     }, 5000); // Auto-scroll every 5 seconds
@@ -373,9 +376,9 @@ export function HorizontalBanners() {
             className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 scroll-smooth"
             onScroll={checkScrollButtons}
             style={{
-              scrollbarWidth: 'none',
-              msOverflowStyle: 'none',
-              WebkitScrollbar: { display: 'none' }
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+              WebkitScrollbar: { display: "none" },
             }}
           >
             {bannerData.map((banner, index) => (
@@ -402,13 +405,11 @@ export function HorizontalBanners() {
                 "w-2 h-2 rounded-full transition-all duration-300",
                 currentIndex === index
                   ? "bg-[#1890ff] w-6"
-                  : "bg-gray-300 hover:bg-gray-400"
+                  : "bg-gray-300 hover:bg-gray-400",
               )}
             />
           ))}
         </div>
-        </div>
-
       </div>
     </section>
   );
