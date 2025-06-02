@@ -156,16 +156,71 @@ interface HorizontalBannerProps {
 
 function HorizontalBanner({ banner }: HorizontalBannerProps) {
   return (
-    <Link to={banner.link || "/"}>
-      <Card
-        className={cn(
-          "relative overflow-hidden border-0 shadow-lg cursor-pointer group transition-all duration-300 hover:shadow-xl hover:scale-105",
-          banner.bgGradient,
-          isLarge
-            ? "h-48 min-w-[400px] md:min-w-[450px]"
-            : "h-40 min-w-[280px] md:min-w-[320px]",
-          "text-white",
-        )}
+    <Link to={banner.link || '/'}>
+      <Card className={cn(
+        "relative overflow-hidden border-0 shadow-lg cursor-pointer group transition-all duration-300 hover:shadow-xl hover:scale-105",
+        banner.bgGradient,
+        "h-44 w-80 flex-shrink-0", // Fixed height and width for all banners
+        "text-white"
+      )}>
+        <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-all duration-300" />
+
+        {/* Decorative elements */}
+        <div className="absolute -top-8 -right-8 w-16 h-16 bg-white/10 rounded-full" />
+        <div className="absolute -bottom-4 -left-4 w-12 h-12 bg-white/10 rounded-full" />
+        <div className="absolute top-1/2 right-8 w-20 h-20 bg-white/5 rounded-full transform -translate-y-1/2" />
+
+        <div className="relative h-full flex flex-col justify-between p-5">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <div className="flex items-center justify-center w-7 h-7 bg-white/20 rounded-full">
+                {getIcon(banner.type)}
+              </div>
+              {banner.featured && (
+                <Badge className="bg-yellow-400 text-yellow-900 text-xs font-bold">
+                  <Star className="h-3 w-3 mr-1" />
+                  Featured
+                </Badge>
+              )}
+            </div>
+
+            <h3 className="font-bold mb-2 leading-tight text-lg">
+              {banner.title}
+            </h3>
+
+            <p className="text-white/90 leading-relaxed text-sm line-clamp-2">
+              {banner.subtitle}
+            </p>
+          </div>
+
+          <div className="flex items-end justify-between">
+            <div>
+              {banner.discount && (
+                <div className="font-bold mb-1 text-lg">
+                  {banner.discount}
+                </div>
+              )}
+              {banner.endDate && (
+                <div className="text-white/80 flex items-center gap-1 text-xs">
+                  <Clock className="h-3 w-3" />
+                  {banner.endDate}
+                </div>
+              )}
+            </div>
+
+            <Button
+              size="sm"
+              className="bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur-sm"
+              variant="outline"
+            >
+              Shop Now
+            </Button>
+          </div>
+        </div>
+      </Card>
+    </Link>
+  );
+}
       >
         <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-all duration-300" />
 
