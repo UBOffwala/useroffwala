@@ -162,7 +162,9 @@ function HorizontalBanner({ banner, isLarge = false }: HorizontalBannerProps) {
         className={cn(
           "relative overflow-hidden border-0 shadow-lg cursor-pointer group transition-all duration-300 hover:shadow-xl hover:scale-105",
           banner.bgGradient,
-          isLarge ? "h-48 min-w-[400px]" : "h-40 min-w-[320px]",
+          isLarge
+            ? "h-48 min-w-[400px] md:min-w-[450px]"
+            : "h-40 min-w-[280px] md:min-w-[320px]",
           "text-white",
         )}
       >
@@ -265,7 +267,7 @@ export function HorizontalBanners() {
       setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
 
       // Update current index based on scroll position
-      const bannerWidth = 340;
+      const bannerWidth = window.innerWidth >= 768 ? 370 : 310;
       const newIndex = Math.round(scrollLeft / bannerWidth);
       setCurrentIndex(newIndex);
     }
@@ -274,7 +276,8 @@ export function HorizontalBanners() {
   const scroll = (direction: "left" | "right") => {
     if (scrollContainerRef.current) {
       setIsAutoScrolling(false);
-      const scrollAmount = 340; // Width of one banner + gap
+      // Responsive scroll amount based on screen size
+      const scrollAmount = window.innerWidth >= 768 ? 370 : 310; // Width of one banner + gap
       const newScrollLeft =
         direction === "left"
           ? scrollContainerRef.current.scrollLeft - scrollAmount
@@ -293,7 +296,8 @@ export function HorizontalBanners() {
   const scrollToIndex = (index: number) => {
     if (scrollContainerRef.current) {
       setIsAutoScrolling(false);
-      const scrollAmount = 340 * index;
+      const bannerWidth = window.innerWidth >= 768 ? 370 : 310;
+      const scrollAmount = bannerWidth * index;
       scrollContainerRef.current.scrollTo({
         left: scrollAmount,
         behavior: "smooth",
