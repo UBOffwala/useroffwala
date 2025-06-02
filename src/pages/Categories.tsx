@@ -180,7 +180,9 @@ export default function Categories() {
                       {selectedCategoryData?.icon}
                     </div>
                     <div>
-                      <h2 className="text-3xl font-bold mb-2 text-gray-900">{selectedCategoryData?.name}</h2>
+                      <h2 className="text-3xl font-bold mb-2 text-gray-900">
+                        {selectedCategoryData?.name}
+                      </h2>
                       <p className="text-gray-600 text-lg">
                         {categoryOffers.length} products available
                       </p>
@@ -388,15 +390,28 @@ export default function Categories() {
 
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {categories
-                      .filter(cat => cat.count > 120)
+                      .filter((cat) => cat.count > 120)
                       .map((category, index) => {
                         const trendingColors = [
-                          { bg: 'bg-gradient-to-br from-blue-50 to-indigo-50', border: 'border-blue-200' },
-                          { bg: 'bg-gradient-to-br from-purple-50 to-pink-50', border: 'border-purple-200' },
-                          { bg: 'bg-gradient-to-br from-green-50 to-teal-50', border: 'border-green-200' },
-                          { bg: 'bg-gradient-to-br from-orange-50 to-red-50', border: 'border-orange-200' },
+                          {
+                            bg: "bg-gradient-to-br from-blue-50 to-indigo-50",
+                            border: "border-blue-200",
+                          },
+                          {
+                            bg: "bg-gradient-to-br from-purple-50 to-pink-50",
+                            border: "border-purple-200",
+                          },
+                          {
+                            bg: "bg-gradient-to-br from-green-50 to-teal-50",
+                            border: "border-green-200",
+                          },
+                          {
+                            bg: "bg-gradient-to-br from-orange-50 to-red-50",
+                            border: "border-orange-200",
+                          },
                         ];
-                        const colorScheme = trendingColors[index % trendingColors.length];
+                        const colorScheme =
+                          trendingColors[index % trendingColors.length];
 
                         return (
                           <Card
@@ -405,7 +420,7 @@ export default function Categories() {
                               "group hover:shadow-xl hover:shadow-[#1890ff]/10 transition-all duration-300 cursor-pointer",
                               "hover:border-[#1890ff]/30 hover:-translate-y-2 border-2",
                               colorScheme.bg,
-                              colorScheme.border
+                              colorScheme.border,
                             )}
                             onClick={() => handleCategorySelect(category.id)}
                           >
@@ -431,8 +446,6 @@ export default function Categories() {
                               <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-gray-200 rounded-full group-hover:bg-[#1890ff] group-hover:w-12 transition-all duration-300" />
                             </CardContent>
                           </Card>
-                        );
-                      })}
                         );
                       })}
                   </div>
@@ -494,12 +507,30 @@ export default function Categories() {
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {categories.slice(-6).map((category, index) => {
                       const newColors = [
-                        { bg: 'bg-gradient-to-br from-green-50 to-emerald-50', border: 'border-green-200' },
-                        { bg: 'bg-gradient-to-br from-blue-50 to-cyan-50', border: 'border-blue-200' },
-                        { bg: 'bg-gradient-to-br from-purple-50 to-violet-50', border: 'border-purple-200' },
-                        { bg: 'bg-gradient-to-br from-pink-50 to-rose-50', border: 'border-pink-200' },
-                        { bg: 'bg-gradient-to-br from-yellow-50 to-amber-50', border: 'border-yellow-200' },
-                        { bg: 'bg-gradient-to-br from-indigo-50 to-blue-50', border: 'border-indigo-200' },
+                        {
+                          bg: "bg-gradient-to-br from-green-50 to-emerald-50",
+                          border: "border-green-200",
+                        },
+                        {
+                          bg: "bg-gradient-to-br from-blue-50 to-cyan-50",
+                          border: "border-blue-200",
+                        },
+                        {
+                          bg: "bg-gradient-to-br from-purple-50 to-violet-50",
+                          border: "border-purple-200",
+                        },
+                        {
+                          bg: "bg-gradient-to-br from-pink-50 to-rose-50",
+                          border: "border-pink-200",
+                        },
+                        {
+                          bg: "bg-gradient-to-br from-yellow-50 to-amber-50",
+                          border: "border-yellow-200",
+                        },
+                        {
+                          bg: "bg-gradient-to-br from-indigo-50 to-blue-50",
+                          border: "border-indigo-200",
+                        },
                       ];
                       const colorScheme = newColors[index % newColors.length];
 
@@ -510,7 +541,7 @@ export default function Categories() {
                             "group hover:shadow-xl hover:shadow-green-500/10 transition-all duration-300 cursor-pointer",
                             "hover:border-green-400/50 hover:-translate-y-2 border-2",
                             colorScheme.bg,
-                            colorScheme.border
+                            colorScheme.border,
                           )}
                           onClick={() => handleCategorySelect(category.id)}
                         >
