@@ -24,6 +24,7 @@ import {
   Shield,
   Truck,
   RotateCcw,
+  MessageSquare,
 } from "lucide-react";
 import { getOfferById, formatPrice } from "@/lib/offers";
 import { Header } from "@/components/Header";
