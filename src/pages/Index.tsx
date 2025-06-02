@@ -19,6 +19,7 @@ import { Footer } from "@/components/Footer";
 import { OfferCard } from "@/components/OfferCard";
 import { CategoryFilter } from "@/components/CategoryFilter";
 import { PromoBannerSection } from "@/components/PromoBanner";
+import { HorizontalBanners } from "@/components/HorizontalBanners";
 import { CategoryGrid } from "@/components/CategoryGrid";
 import { TopDealsSection } from "@/components/TopDealsSection";
 import { filterOffers, searchOffers, getFeaturedOffers } from "@/lib/offers";
@@ -182,6 +183,13 @@ export default function Index() {
           </section>
         )}
 
+      {/* Horizontal Scrollable Banners - Only show on homepage */}
+      {!searchQuery &&
+        !categoryParam &&
+        !featuredParam &&
+        !newParam &&
+        !discountParam && <HorizontalBanners />}
+
       {/* Promotional Banners - Only show on homepage */}
       {!searchQuery &&
         !categoryParam &&
@@ -192,7 +200,6 @@ export default function Index() {
             <PromoBannerSection />
           </div>
         )}
-
       {/* Top Deals Section - Only show on homepage */}
       {!searchQuery &&
         !categoryParam &&
