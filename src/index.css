@@ -171,6 +171,21 @@
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: #a8a8a8;
   }
+
+  /* Hide scrollbar */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Smooth scroll behavior */
+  .scroll-smooth {
+    scroll-behavior: smooth;
+  }
 }
 
 @keyframes fadeIn {
