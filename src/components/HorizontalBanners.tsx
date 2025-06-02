@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -254,30 +254,79 @@ export function HorizontalBanners() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAutoScrolling, setIsAutoScrolling] = useState(true);
 
   const checkScrollButtons = () => {
     if (scrollContainerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } =
-        scrollContainerRef.current;
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
       setCanScrollLeft(scrollLeft > 0);
       setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+
+      // Update current index based on scroll position
+      const bannerWidth = 340;
+      const newIndex = Math.round(scrollLeft / bannerWidth);
+      setCurrentIndex(newIndex);
     }
   };
 
-  const scroll = (direction: "left" | "right") => {
+  const scroll = (direction: 'left' | 'right') => {
     if (scrollContainerRef.current) {
+      setIsAutoScrolling(false);
       const scrollAmount = 340; // Width of one banner + gap
-      const newScrollLeft =
-        direction === "left"
-          ? scrollContainerRef.current.scrollLeft - scrollAmount
-          : scrollContainerRef.current.scrollLeft + scrollAmount;
+      const newScrollLeft = direction === 'left'
+        ? scrollContainerRef.current.scrollLeft - scrollAmount
+        : scrollContainerRef.current.scrollLeft + scrollAmount;
 
       scrollContainerRef.current.scrollTo({
         left: newScrollLeft,
-        behavior: "smooth",
+        behavior: 'smooth'
       });
+
+      // Resume auto-scroll after 10 seconds
+      setTimeout(() => setIsAutoScrolling(true), 10000);
     }
   };
+
+  const scrollToIndex = (index: number) => {
+    if (scrollContainerRef.current) {
+      setIsAutoScrolling(false);
+      const scrollAmount = 340 * index;
+      scrollContainerRef.current.scrollTo({
+        left: scrollAmount,
+        behavior: 'smooth'
+      });
+
+      // Resume auto-scroll after 10 seconds
+      setTimeout(() => setIsAutoScrolling(true), 10000);
+    }
+  };
+
+  // Auto-scroll functionality
+  useEffect(() => {
+    if (!isAutoScrolling) return;
+
+    const interval = setInterval(() => {
+      if (scrollContainerRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+        const maxScroll = scrollWidth - clientWidth;
+
+        if (scrollLeft >= maxScroll - 10) {
+          // Reset to beginning
+          scrollContainerRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          // Scroll to next banner
+          scroll('right');
+        }
+      }
+    }, 5000); // Auto-scroll every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [isAutoScrolling]);
+
+  // Pause auto-scroll on hover
+  const handleMouseEnter = () => setIsAutoScrolling(false);
+  const handleMouseLeave = () => setIsAutoScrolling(true);
 
   return (
     <section className="py-8">
@@ -314,15 +363,19 @@ export function HorizontalBanners() {
           </div>
         </div>
 
-        <div className="relative">
+        <div
+          className="relative"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
           <div
             ref={scrollContainerRef}
             className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 scroll-smooth"
             onScroll={checkScrollButtons}
             style={{
-              scrollbarWidth: "none",
-              msOverflowStyle: "none",
-              WebkitScrollbar: { display: "none" },
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+              WebkitScrollbar: { display: 'none' }
             }}
           >
             {bannerData.map((banner, index) => (
@@ -339,25 +392,24 @@ export function HorizontalBanners() {
           <div className="absolute right-0 top-0 bottom-4 w-8 bg-gradient-to-l from-gray-50 to-transparent pointer-events-none" />
         </div>
 
-        {/* Mobile scroll indicator */}
-        <div className="flex justify-center mt-4 md:hidden">
-          <p className="text-sm text-gray-500 flex items-center gap-2">
-            <ChevronLeft className="h-4 w-4" />
-            Swipe to see more deals
-            <ChevronRight className="h-4 w-4" />
-          </p>
+        {/* Dot indicators */}
+        <div className="flex justify-center mt-4 gap-2">
+          {bannerData.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => scrollToIndex(index)}
+              className={cn(
+                "w-2 h-2 rounded-full transition-all duration-300",
+                currentIndex === index
+                  ? "bg-[#1890ff] w-6"
+                  : "bg-gray-300 hover:bg-gray-400"
+              )}
+            />
+          ))}
         </div>
-      </div>
+        </div>
 
-      <style jsx>{`
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
+      </div>
     </section>
   );
 }
