@@ -152,10 +152,9 @@ const getIcon = (type: string) => {
 
 interface HorizontalBannerProps {
   banner: BannerData;
-  isLarge?: boolean;
 }
 
-function HorizontalBanner({ banner, isLarge = false }: HorizontalBannerProps) {
+function HorizontalBanner({ banner }: HorizontalBannerProps) {
   return (
     <Link to={banner.link || "/"}>
       <Card
@@ -176,10 +175,12 @@ function HorizontalBanner({ banner, isLarge = false }: HorizontalBannerProps) {
         <div className="absolute top-1/2 right-8 w-20 h-20 bg-white/5 rounded-full transform -translate-y-1/2" />
 
         <div
-          className={cn(
-            "relative h-full flex flex-col justify-between p-6",
-            isLarge ? "p-8" : "p-6",
-          )}
+      <Card className={cn(
+        "relative overflow-hidden border-0 shadow-lg cursor-pointer group transition-all duration-300 hover:shadow-xl hover:scale-105",
+        banner.bgGradient,
+        "h-44 w-80 flex-shrink-0", // Fixed height and width for all banners
+        "text-white"
+      )}>
         >
           <div>
             <div className="flex items-center gap-2 mb-2">
@@ -195,20 +196,25 @@ function HorizontalBanner({ banner, isLarge = false }: HorizontalBannerProps) {
             </div>
 
             <h3
-              className={cn(
-                "font-bold mb-2 leading-tight",
-                isLarge ? "text-2xl" : "text-xl",
+        <div className="relative h-full flex flex-col justify-between p-5">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <div className="flex items-center justify-center w-7 h-7 bg-white/20 rounded-full">
+                {getIcon(banner.type)}
+              </div>
+              {banner.featured && (
+                <Badge className="bg-yellow-400 text-yellow-900 text-xs font-bold">
+                  <Star className="h-3 w-3 mr-1" />
+                  Featured
+                </Badge>
               )}
-            >
+            </div>
+
+            <h3 className="font-bold mb-2 leading-tight text-lg">
               {banner.title}
             </h3>
 
-            <p
-              className={cn(
-                "text-white/90 leading-relaxed",
-                isLarge ? "text-base" : "text-sm",
-              )}
-            >
+            <p className="text-white/90 leading-relaxed text-sm line-clamp-2">
               {banner.subtitle}
             </p>
           </div>
@@ -216,22 +222,12 @@ function HorizontalBanner({ banner, isLarge = false }: HorizontalBannerProps) {
           <div className="flex items-end justify-between">
             <div>
               {banner.discount && (
-                <div
-                  className={cn(
-                    "font-bold mb-1",
-                    isLarge ? "text-2xl" : "text-lg",
-                  )}
-                >
+                <div className="font-bold mb-1 text-lg">
                   {banner.discount}
                 </div>
               )}
               {banner.endDate && (
-                <div
-                  className={cn(
-                    "text-white/80 flex items-center gap-1",
-                    isLarge ? "text-sm" : "text-xs",
-                  )}
-                >
+                <div className="text-white/80 flex items-center gap-1 text-xs">
                   <Clock className="h-3 w-3" />
                   {banner.endDate}
                 </div>
@@ -239,7 +235,7 @@ function HorizontalBanner({ banner, isLarge = false }: HorizontalBannerProps) {
             </div>
 
             <Button
-              size={isLarge ? "default" : "sm"}
+              size="sm"
               className="bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur-sm"
               variant="outline"
             >
@@ -267,25 +263,24 @@ export function HorizontalBanners() {
       setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
 
       // Update current index based on scroll position
-      const bannerWidth = window.innerWidth >= 768 ? 370 : 310;
+      const bannerWidth = 344; // Fixed width for uniform banners
       const newIndex = Math.round(scrollLeft / bannerWidth);
       setCurrentIndex(newIndex);
     }
   };
 
-  const scroll = (direction: "left" | "right") => {
+  const scroll = (direction: 'left' | 'right') => {
     if (scrollContainerRef.current) {
       setIsAutoScrolling(false);
-      // Responsive scroll amount based on screen size
-      const scrollAmount = window.innerWidth >= 768 ? 370 : 310; // Width of one banner + gap
-      const newScrollLeft =
-        direction === "left"
-          ? scrollContainerRef.current.scrollLeft - scrollAmount
-          : scrollContainerRef.current.scrollLeft + scrollAmount;
+      // Fixed scroll amount for uniform banners (320px width + 24px gap)
+      const scrollAmount = 344;
+      const newScrollLeft = direction === 'left'
+        ? scrollContainerRef.current.scrollLeft - scrollAmount
+        : scrollContainerRef.current.scrollLeft + scrollAmount;
 
       scrollContainerRef.current.scrollTo({
         left: newScrollLeft,
-        behavior: "smooth",
+        behavior: 'smooth'
       });
 
       // Resume auto-scroll after 10 seconds
@@ -296,11 +291,11 @@ export function HorizontalBanners() {
   const scrollToIndex = (index: number) => {
     if (scrollContainerRef.current) {
       setIsAutoScrolling(false);
-      const bannerWidth = window.innerWidth >= 768 ? 370 : 310;
+      const bannerWidth = 344; // Fixed width for uniform banners
       const scrollAmount = bannerWidth * index;
       scrollContainerRef.current.scrollTo({
         left: scrollAmount,
-        behavior: "smooth",
+        behavior: 'smooth'
       });
 
       // Resume auto-scroll after 10 seconds
@@ -385,11 +380,10 @@ export function HorizontalBanners() {
               WebkitScrollbar: { display: "none" },
             }}
           >
-            {bannerData.map((banner, index) => (
+            {bannerData.map((banner) => (
               <HorizontalBanner
                 key={banner.id}
                 banner={banner}
-                isLarge={index === 0} // Make first banner larger
               />
             ))}
           </div>
