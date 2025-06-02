@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { useUser } from "@/contexts/UserContext";
+import { LocationSelector } from "@/components/LocationSelector";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -21,7 +22,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Search, Menu, Heart, ShoppingBag, User } from "lucide-react";
+import { Search, Menu, Heart, ShoppingBag, User, MapPin } from "lucide-react";
 import { categories } from "@/data/offers";
 import { cn } from "@/lib/utils";
 
@@ -148,7 +149,12 @@ export function Header() {
           </div>
 
           {/* Right Side Icons */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2">
+            {/* Location Selector */}
+            <div className="hidden lg:block">
+              <LocationSelector />
+            </div>
+
             <Link to="/wishlist">
               <Button
                 variant="ghost"
@@ -180,7 +186,6 @@ export function Header() {
                 <User className="h-5 w-5" />
               </Button>
             </Link>
-
             {/* Mobile Menu */}
             <Sheet>
               <SheetTrigger asChild>
@@ -263,6 +268,18 @@ export function Header() {
                   </div>
                   <div className="border-t pt-4">
                     <div className="space-y-2">
+                      <Link
+                        to="/location"
+                        className="flex items-center space-x-3 p-2 hover:bg-gray-50 rounded-lg transition-colors"
+                      >
+                        <MapPin className="h-5 w-5" />
+                        <div>
+                          <div className="font-medium">Location</div>
+                          <div className="text-sm text-gray-500">
+                            Choose your area
+                          </div>
+                        </div>
+                      </Link>
                       <Link
                         to="/wishlist"
                         className="flex items-center space-x-3 p-2 hover:bg-gray-50 rounded-lg transition-colors"

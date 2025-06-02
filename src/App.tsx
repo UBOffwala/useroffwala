@@ -6,11 +6,13 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { UserProvider } from "@/contexts/UserContext";
 import { WishlistProvider } from "@/contexts/WishlistContext";
 import { TicketProvider } from "@/contexts/TicketContext";
+import { LocationProvider } from "@/contexts/LocationContext";
 import Index from "./pages/Index";
 import OfferDetails from "./pages/OfferDetails";
 import Profile from "./pages/Profile";
 import Wishlist from "./pages/Wishlist";
 import Categories from "./pages/Categories";
+import LocationPage from "./pages/LocationPage";
 import Tickets from "./pages/Tickets";
 import CreateTicket from "./pages/CreateTicket";
 import TicketDetails from "./pages/TicketDetails";
@@ -23,24 +25,27 @@ const App = () => (
     <UserProvider>
       <WishlistProvider>
         <TicketProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/offer/:id" element={<OfferDetails />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/wishlist" element={<Wishlist />} />
-                <Route path="/categories" element={<Categories />} />
-                <Route path="/tickets" element={<Tickets />} />
-                <Route path="/tickets/new" element={<CreateTicket />} />
-                <Route path="/tickets/:id" element={<TicketDetails />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </BrowserRouter>
-          </TooltipProvider>
+          <LocationProvider>
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/offer/:id" element={<OfferDetails />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/wishlist" element={<Wishlist />} />
+                  <Route path="/categories" element={<Categories />} />
+                  <Route path="/location" element={<LocationPage />} />
+                  <Route path="/tickets" element={<Tickets />} />
+                  <Route path="/tickets/new" element={<CreateTicket />} />
+                  <Route path="/tickets/:id" element={<TicketDetails />} />
+                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </BrowserRouter>
+            </TooltipProvider>
+          </LocationProvider>
         </TicketProvider>
       </WishlistProvider>
     </UserProvider>
