@@ -14,71 +14,68 @@ interface CategoryCardProps {
     count: number;
   };
   className?: string;
-  isLarge?: boolean;
 }
 
-function CategoryCard({
-  category,
-  className,
-  isLarge = false,
-}: CategoryCardProps) {
-  const gradients = [
-    "bg-gradient-to-br from-blue-400 to-blue-600",
-    "bg-gradient-to-br from-purple-400 to-purple-600",
-    "bg-gradient-to-br from-green-400 to-green-600",
-    "bg-gradient-to-br from-orange-400 to-orange-600",
-    "bg-gradient-to-br from-pink-400 to-pink-600",
-    "bg-gradient-to-br from-indigo-400 to-indigo-600",
-    "bg-gradient-to-br from-teal-400 to-teal-600",
-    "bg-gradient-to-br from-red-400 to-red-600",
+function CategoryCard({ category, className }: CategoryCardProps) {
+  const lightColors = [
+    { bg: "bg-blue-50", icon: "text-blue-600", border: "border-blue-200" },
+    {
+      bg: "bg-purple-50",
+      icon: "text-purple-600",
+      border: "border-purple-200",
+    },
+    { bg: "bg-green-50", icon: "text-green-600", border: "border-green-200" },
+    {
+      bg: "bg-orange-50",
+      icon: "text-orange-600",
+      border: "border-orange-200",
+    },
+    { bg: "bg-pink-50", icon: "text-pink-600", border: "border-pink-200" },
+    {
+      bg: "bg-indigo-50",
+      icon: "text-indigo-600",
+      border: "border-indigo-200",
+    },
+    { bg: "bg-teal-50", icon: "text-teal-600", border: "border-teal-200" },
+    { bg: "bg-red-50", icon: "text-red-600", border: "border-red-200" },
   ];
 
-  const gradient = gradients[category.id.length % gradients.length];
+  const colorScheme = lightColors[category.id.length % lightColors.length];
 
   return (
     <Link to={`/categories?selected=${category.id}`}>
       <Card
         className={cn(
-          "group hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden border-0",
-          isLarge ? "h-32" : "h-24",
+          "group hover:shadow-xl hover:shadow-[#1890ff]/10 transition-all duration-300 cursor-pointer overflow-hidden",
+          "hover:border-[#1890ff]/30 hover:-translate-y-1 h-32",
           className,
         )}
       >
-        <CardContent className={cn("p-0 h-full relative", gradient)}>
-          <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors" />
-
-          <div className="relative h-full flex items-center justify-center text-white">
-            <div className="text-center">
-              <div
-                className={cn(
-                  "text-center mb-2 group-hover:scale-110 transition-transform",
-                  isLarge ? "text-3xl" : "text-2xl",
-                )}
-              >
-                {category.icon}
-              </div>
-              <h3
-                className={cn(
-                  "font-semibold group-hover:scale-105 transition-transform",
-                  isLarge ? "text-lg" : "text-sm",
-                )}
-              >
-                {category.name}
-              </h3>
-              <p
-                className={cn(
-                  "text-white/80 mt-1",
-                  isLarge ? "text-sm" : "text-xs",
-                )}
-              >
-                {category.count} offers
-              </p>
+        <CardContent
+          className={cn(
+            "p-6 h-full relative",
+            colorScheme.bg,
+            "border-2 border-gray-100 group-hover:border-[#1890ff]/30",
+          )}
+        >
+          <div className="h-full flex flex-col items-center justify-center text-center">
+            <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300">
+              {category.icon}
             </div>
+            <h3 className="font-semibold text-gray-900 group-hover:text-[#1890ff] transition-colors duration-300 text-sm">
+              {category.name}
+            </h3>
+            <p className="text-gray-600 mt-1 font-medium text-xs">
+              {category.count} offers
+            </p>
+
+            {/* Decorative element */}
+            <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-8 h-1 rounded-full transition-all duration-300 bg-gray-200 group-hover:bg-[#1890ff] group-hover:w-12" />
           </div>
 
           {/* Trending badge for popular categories */}
           {category.count > 150 && (
-            <Badge className="absolute top-2 right-2 bg-yellow-400 text-yellow-900 text-xs">
+            <Badge className="absolute top-3 right-3 bg-gradient-to-r from-[#1890ff] to-[#722ed1] text-white text-xs shadow-lg">
               <TrendingUp className="h-3 w-3 mr-1" />
               Hot
             </Badge>
