@@ -103,7 +103,7 @@ export function CategoryGrid({
   const displayCategories = showAll ? categories : categories.slice(0, 6);
 
   return (
-    <section className={cn("py-12", className)}>
+    <section className={cn("py-12 bg-white", className)}>
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between mb-8">
           <div>
@@ -117,7 +117,7 @@ export function CategoryGrid({
             <Link to="/categories">
               <Button
                 variant="outline"
-                className="gap-2 hover:border-[#1890ff] hover:text-[#1890ff]"
+                className="gap-2 hover:border-[#1890ff] hover:text-[#1890ff] hover:bg-[#1890ff]/5"
               >
                 View All Categories
                 <ArrowRight className="h-4 w-4" />
@@ -126,20 +126,16 @@ export function CategoryGrid({
           )}
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {displayCategories.map((category, index) => (
-            <CategoryCard
-              key={category.id}
-              category={category}
-              isLarge={index < 2} // Make first two cards larger
-            />
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
+          {displayCategories.map((category) => (
+            <CategoryCard key={category.id} category={category} />
           ))}
         </div>
 
         {!showAll && (
-          <div className="text-center mt-8">
+          <div className="text-center mt-10">
             <Link to="/categories">
-              <Button className="bg-[#1890ff] hover:bg-[#1890ff]/90">
+              <Button className="bg-gradient-to-r from-[#1890ff] to-[#722ed1] hover:from-[#1890ff]/90 hover:to-[#722ed1]/90 px-8 py-3 text-lg">
                 Browse All Categories
               </Button>
             </Link>

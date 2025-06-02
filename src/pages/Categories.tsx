@@ -172,19 +172,19 @@ export default function Categories() {
           /* Category Products View */
           <div className="space-y-6">
             {/* Category Header */}
-            <Card className="bg-gradient-to-r from-[#1890ff] to-[#722ed1] text-white border-0">
+            <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-[#1890ff]/20">
               <CardContent className="p-8">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className="text-6xl">{selectedCategoryData?.icon}</div>
+                  <div className="flex items-center gap-6">
+                    <div className="text-6xl p-4 bg-white rounded-full shadow-lg border-2 border-[#1890ff]/20">
+                      {selectedCategoryData?.icon}
+                    </div>
                     <div>
-                      <h2 className="text-3xl font-bold mb-2">
-                        {selectedCategoryData?.name}
-                      </h2>
-                      <p className="text-white/90">
+                      <h2 className="text-3xl font-bold mb-2 text-gray-900">{selectedCategoryData?.name}</h2>
+                      <p className="text-gray-600 text-lg">
                         {categoryOffers.length} products available
                       </p>
-                      <Badge className="bg-white/20 text-white mt-2">
+                      <Badge className="bg-gradient-to-r from-[#1890ff] to-[#722ed1] text-white mt-3">
                         <TrendingUp className="h-3 w-3 mr-1" />
                         Popular Category
                       </Badge>
@@ -193,7 +193,6 @@ export default function Categories() {
                 </div>
               </CardContent>
             </Card>
-
             {/* Filters & Search */}
             <Card>
               <CardContent className="p-4">
@@ -389,31 +388,53 @@ export default function Categories() {
 
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {categories
-                      .sort((a, b) => b.count - a.count)
-                      .slice(0, 8)
-                      .map((category) => (
-                        <Card
-                          key={category.id}
-                          className="group hover:shadow-xl transition-all duration-300 cursor-pointer"
-                          onClick={() => handleCategorySelect(category.id)}
-                        >
-                          <CardContent className="p-6 text-center">
-                            <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">
-                              {category.icon}
-                            </div>
-                            <h3 className="font-semibold text-gray-900 mb-1">
-                              {category.name}
-                            </h3>
-                            <p className="text-sm text-gray-600 mb-2">
-                              {category.count} offers
-                            </p>
-                            <Badge className="bg-orange-100 text-orange-700">
-                              <Star className="h-3 w-3 mr-1" />
-                              Popular
-                            </Badge>
-                          </CardContent>
-                        </Card>
-                      ))}
+                      .filter(cat => cat.count > 120)
+                      .map((category, index) => {
+                        const trendingColors = [
+                          { bg: 'bg-gradient-to-br from-blue-50 to-indigo-50', border: 'border-blue-200' },
+                          { bg: 'bg-gradient-to-br from-purple-50 to-pink-50', border: 'border-purple-200' },
+                          { bg: 'bg-gradient-to-br from-green-50 to-teal-50', border: 'border-green-200' },
+                          { bg: 'bg-gradient-to-br from-orange-50 to-red-50', border: 'border-orange-200' },
+                        ];
+                        const colorScheme = trendingColors[index % trendingColors.length];
+
+                        return (
+                          <Card
+                            key={category.id}
+                            className={cn(
+                              "group hover:shadow-xl hover:shadow-[#1890ff]/10 transition-all duration-300 cursor-pointer",
+                              "hover:border-[#1890ff]/30 hover:-translate-y-2 border-2",
+                              colorScheme.bg,
+                              colorScheme.border
+                            )}
+                            onClick={() => handleCategorySelect(category.id)}
+                          >
+                            <CardContent className="p-6 text-center relative">
+                              <div className="text-4xl mb-4 group-hover:scale-110 transition-transform">
+                                {category.icon}
+                              </div>
+                              <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-[#1890ff] transition-colors">
+                                {category.name}
+                              </h3>
+                              <p className="text-sm text-gray-600 mb-3 font-medium">
+                                {category.count} offers
+                              </p>
+                              <Badge className="bg-gradient-to-r from-[#1890ff] to-[#722ed1] text-white shadow-lg">
+                                <TrendingUp className="h-3 w-3 mr-1" />
+                                Trending
+                              </Badge>
+
+                              {/* Trending indicator */}
+                              <div className="absolute top-3 right-3 w-3 h-3 bg-gradient-to-r from-[#1890ff] to-[#722ed1] rounded-full animate-pulse" />
+
+                              {/* Decorative element */}
+                              <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-gray-200 rounded-full group-hover:bg-[#1890ff] group-hover:w-12 transition-all duration-300" />
+                            </CardContent>
+                          </Card>
+                        );
+                      })}
+                        );
+                      })}
                   </div>
                 </div>
               </TabsContent>
@@ -471,29 +492,54 @@ export default function Categories() {
                   </div>
 
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {categories.slice(-6).map((category) => (
-                      <Card
-                        key={category.id}
-                        className="group hover:shadow-xl transition-all duration-300 cursor-pointer bg-gradient-to-br from-green-50 to-blue-50"
-                        onClick={() => handleCategorySelect(category.id)}
-                      >
-                        <CardContent className="p-6 text-center">
-                          <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">
-                            {category.icon}
-                          </div>
-                          <h3 className="font-semibold text-gray-900 mb-1">
-                            {category.name}
-                          </h3>
-                          <p className="text-sm text-gray-600 mb-2">
-                            {category.count} offers
-                          </p>
-                          <Badge className="bg-green-500 text-white">
-                            <Clock className="h-3 w-3 mr-1" />
-                            New
-                          </Badge>
-                        </CardContent>
-                      </Card>
-                    ))}
+                    {categories.slice(-6).map((category, index) => {
+                      const newColors = [
+                        { bg: 'bg-gradient-to-br from-green-50 to-emerald-50', border: 'border-green-200' },
+                        { bg: 'bg-gradient-to-br from-blue-50 to-cyan-50', border: 'border-blue-200' },
+                        { bg: 'bg-gradient-to-br from-purple-50 to-violet-50', border: 'border-purple-200' },
+                        { bg: 'bg-gradient-to-br from-pink-50 to-rose-50', border: 'border-pink-200' },
+                        { bg: 'bg-gradient-to-br from-yellow-50 to-amber-50', border: 'border-yellow-200' },
+                        { bg: 'bg-gradient-to-br from-indigo-50 to-blue-50', border: 'border-indigo-200' },
+                      ];
+                      const colorScheme = newColors[index % newColors.length];
+
+                      return (
+                        <Card
+                          key={category.id}
+                          className={cn(
+                            "group hover:shadow-xl hover:shadow-green-500/10 transition-all duration-300 cursor-pointer",
+                            "hover:border-green-400/50 hover:-translate-y-2 border-2",
+                            colorScheme.bg,
+                            colorScheme.border
+                          )}
+                          onClick={() => handleCategorySelect(category.id)}
+                        >
+                          <CardContent className="p-6 text-center relative">
+                            <div className="text-4xl mb-4 group-hover:scale-110 transition-transform">
+                              {category.icon}
+                            </div>
+                            <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-green-600 transition-colors">
+                              {category.name}
+                            </h3>
+                            <p className="text-sm text-gray-600 mb-3 font-medium">
+                              {category.count} offers
+                            </p>
+                            <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg">
+                              <Clock className="h-3 w-3 mr-1" />
+                              New
+                            </Badge>
+
+                            {/* New indicator */}
+                            <div className="absolute top-3 right-3 w-3 h-3 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full">
+                              <div className="w-full h-full bg-gradient-to-r from-green-400 to-emerald-400 rounded-full animate-ping" />
+                            </div>
+
+                            {/* Decorative element */}
+                            <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-gray-200 rounded-full group-hover:bg-green-500 group-hover:w-12 transition-all duration-300" />
+                          </CardContent>
+                        </Card>
+                      );
+                    })}
                   </div>
                 </div>
               </TabsContent>
