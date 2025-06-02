@@ -186,6 +186,21 @@
   .scroll-smooth {
     scroll-behavior: smooth;
   }
+
+  /* Category card animations */
+  .category-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .category-card:hover {
+    transform: translateY(-8px) scale(1.02);
+  }
+
+  /* Glassmorphism effect for cards */
+  .glass-card {
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
 }
 
 @keyframes fadeIn {
