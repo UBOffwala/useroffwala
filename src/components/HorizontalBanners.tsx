@@ -14,8 +14,6 @@ import {
   Crown,
   Star,
   Clock,
-  Target,
-  Heart,
   Flame,
 } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -130,23 +128,23 @@ const bannerData: BannerData[] = [
 const getIcon = (type: string) => {
   switch (type) {
     case "festival":
-      return <Sparkles className="h-5 w-5" />;
+      return <Sparkles className="h-4 w-4" />;
     case "megasale":
-      return <Percent className="h-5 w-5" />;
+      return <Percent className="h-4 w-4" />;
     case "season":
-      return <Calendar className="h-5 w-5" />;
+      return <Calendar className="h-4 w-4" />;
     case "flash":
-      return <Zap className="h-5 w-5" />;
+      return <Zap className="h-4 w-4" />;
     case "weekend":
-      return <Gift className="h-5 w-5" />;
+      return <Gift className="h-4 w-4" />;
     case "limited":
-      return <Clock className="h-5 w-5" />;
+      return <Clock className="h-4 w-4" />;
     case "special":
-      return <Crown className="h-5 w-5" />;
+      return <Crown className="h-4 w-4" />;
     case "trending":
-      return <Flame className="h-5 w-5" />;
+      return <Flame className="h-4 w-4" />;
     default:
-      return <ShoppingBag className="h-5 w-5" />;
+      return <ShoppingBag className="h-4 w-4" />;
   }
 };
 
@@ -156,71 +154,14 @@ interface HorizontalBannerProps {
 
 function HorizontalBanner({ banner }: HorizontalBannerProps) {
   return (
-    <Link to={banner.link || '/'}>
-      <Card className={cn(
-        "relative overflow-hidden border-0 shadow-lg cursor-pointer group transition-all duration-300 hover:shadow-xl hover:scale-105",
-        banner.bgGradient,
-        "h-44 w-80 flex-shrink-0", // Fixed height and width for all banners
-        "text-white"
-      )}>
-        <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-all duration-300" />
-
-        {/* Decorative elements */}
-        <div className="absolute -top-8 -right-8 w-16 h-16 bg-white/10 rounded-full" />
-        <div className="absolute -bottom-4 -left-4 w-12 h-12 bg-white/10 rounded-full" />
-        <div className="absolute top-1/2 right-8 w-20 h-20 bg-white/5 rounded-full transform -translate-y-1/2" />
-
-        <div className="relative h-full flex flex-col justify-between p-5">
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <div className="flex items-center justify-center w-7 h-7 bg-white/20 rounded-full">
-                {getIcon(banner.type)}
-              </div>
-              {banner.featured && (
-                <Badge className="bg-yellow-400 text-yellow-900 text-xs font-bold">
-                  <Star className="h-3 w-3 mr-1" />
-                  Featured
-                </Badge>
-              )}
-            </div>
-
-            <h3 className="font-bold mb-2 leading-tight text-lg">
-              {banner.title}
-            </h3>
-
-            <p className="text-white/90 leading-relaxed text-sm line-clamp-2">
-              {banner.subtitle}
-            </p>
-          </div>
-
-          <div className="flex items-end justify-between">
-            <div>
-              {banner.discount && (
-                <div className="font-bold mb-1 text-lg">
-                  {banner.discount}
-                </div>
-              )}
-              {banner.endDate && (
-                <div className="text-white/80 flex items-center gap-1 text-xs">
-                  <Clock className="h-3 w-3" />
-                  {banner.endDate}
-                </div>
-              )}
-            </div>
-
-            <Button
-              size="sm"
-              className="bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur-sm"
-              variant="outline"
-            >
-              Shop Now
-            </Button>
-          </div>
-        </div>
-      </Card>
-    </Link>
-  );
-}
+    <Link to={banner.link || "/"}>
+      <Card
+        className={cn(
+          "relative overflow-hidden border-0 shadow-lg cursor-pointer group transition-all duration-300 hover:shadow-xl hover:scale-105",
+          banner.bgGradient,
+          "h-44 w-80 flex-shrink-0", // Fixed height and width for all banners
+          "text-white",
+        )}
       >
         <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-all duration-300" />
 
@@ -229,28 +170,6 @@ function HorizontalBanner({ banner }: HorizontalBannerProps) {
         <div className="absolute -bottom-4 -left-4 w-12 h-12 bg-white/10 rounded-full" />
         <div className="absolute top-1/2 right-8 w-20 h-20 bg-white/5 rounded-full transform -translate-y-1/2" />
 
-        <div
-      <Card className={cn(
-        "relative overflow-hidden border-0 shadow-lg cursor-pointer group transition-all duration-300 hover:shadow-xl hover:scale-105",
-        banner.bgGradient,
-        "h-44 w-80 flex-shrink-0", // Fixed height and width for all banners
-        "text-white"
-      )}>
-        >
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <div className="flex items-center justify-center w-8 h-8 bg-white/20 rounded-full">
-                {getIcon(banner.type)}
-              </div>
-              {banner.featured && (
-                <Badge className="bg-yellow-400 text-yellow-900 text-xs font-bold">
-                  <Star className="h-3 w-3 mr-1" />
-                  Featured
-                </Badge>
-              )}
-            </div>
-
-            <h3
         <div className="relative h-full flex flex-col justify-between p-5">
           <div>
             <div className="flex items-center gap-2 mb-2">
@@ -277,9 +196,7 @@ function HorizontalBanner({ banner }: HorizontalBannerProps) {
           <div className="flex items-end justify-between">
             <div>
               {banner.discount && (
-                <div className="font-bold mb-1 text-lg">
-                  {banner.discount}
-                </div>
+                <div className="font-bold mb-1 text-lg">{banner.discount}</div>
               )}
               {banner.endDate && (
                 <div className="text-white/80 flex items-center gap-1 text-xs">
@@ -318,24 +235,25 @@ export function HorizontalBanners() {
       setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
 
       // Update current index based on scroll position
-      const bannerWidth = 344; // Fixed width for uniform banners
+      const bannerWidth = 344; // Fixed width for uniform banners (320px + 24px gap)
       const newIndex = Math.round(scrollLeft / bannerWidth);
       setCurrentIndex(newIndex);
     }
   };
 
-  const scroll = (direction: 'left' | 'right') => {
+  const scroll = (direction: "left" | "right") => {
     if (scrollContainerRef.current) {
       setIsAutoScrolling(false);
       // Fixed scroll amount for uniform banners (320px width + 24px gap)
       const scrollAmount = 344;
-      const newScrollLeft = direction === 'left'
-        ? scrollContainerRef.current.scrollLeft - scrollAmount
-        : scrollContainerRef.current.scrollLeft + scrollAmount;
+      const newScrollLeft =
+        direction === "left"
+          ? scrollContainerRef.current.scrollLeft - scrollAmount
+          : scrollContainerRef.current.scrollLeft + scrollAmount;
 
       scrollContainerRef.current.scrollTo({
         left: newScrollLeft,
-        behavior: 'smooth'
+        behavior: "smooth",
       });
 
       // Resume auto-scroll after 10 seconds
@@ -350,7 +268,7 @@ export function HorizontalBanners() {
       const scrollAmount = bannerWidth * index;
       scrollContainerRef.current.scrollTo({
         left: scrollAmount,
-        behavior: 'smooth'
+        behavior: "smooth",
       });
 
       // Resume auto-scroll after 10 seconds
@@ -429,17 +347,9 @@ export function HorizontalBanners() {
             ref={scrollContainerRef}
             className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 scroll-smooth"
             onScroll={checkScrollButtons}
-            style={{
-              scrollbarWidth: "none",
-              msOverflowStyle: "none",
-              WebkitScrollbar: { display: "none" },
-            }}
           >
             {bannerData.map((banner) => (
-              <HorizontalBanner
-                key={banner.id}
-                banner={banner}
-              />
+              <HorizontalBanner key={banner.id} banner={banner} />
             ))}
           </div>
 
