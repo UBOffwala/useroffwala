@@ -6,7 +6,6 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { useUser } from "@/contexts/UserContext";
-import { useSearch } from "@/contexts/SearchContext";
 import { LocationSelector } from "@/components/LocationSelector";
 import {
   NavigationMenu,
@@ -50,28 +49,15 @@ import {
   Loader2,
 } from "lucide-react";
 import { categories } from "@/data/offers";
-import { SearchSuggestion } from "@/types/search";
 import { cn } from "@/lib/utils";
 
 export function Header() {
   const [searchInput, setSearchInput] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [isSearchFocused, setIsSearchFocused] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const { wishlistCount } = useWishlist();
   const { user, isLoggedIn } = useUser();
-  const {
-    query,
-    suggestions,
-    recentSearches,
-    popularSearches,
-    isLoading,
-    updateQuery,
-    performSearchAction,
-    selectSuggestion,
-    clearSearch,
-  } = useSearch();
 
   // Close suggestions when clicking outside
   useEffect(() => {
@@ -99,39 +85,9 @@ export function Header() {
     }
   };
 
-  const handleSuggestionClick = (suggestion: SearchSuggestion) => {
-    setSearchInput(suggestion.text);
-    setShowSuggestions(false);
-    setIsSearchFocused(false);
-
-    // Navigate based on suggestion type
-    if (suggestion.type === "category") {
-      navigate(
-        `/?search=${encodeURIComponent(suggestion.text)}&category=${suggestion.id.replace("category_", "")}`,
-      );
-    } else if (suggestion.type === "vendor") {
-      navigate(`/?search=${encodeURIComponent(suggestion.text)}`);
-    } else {
-      navigate(`/?search=${encodeURIComponent(suggestion.text)}`);
-    }
-  };
-
   const handleInputChange = (value: string) => {
     setSearchInput(value);
-    updateQuery(value);
-    setShowSuggestions(value.length > 0 || isSearchFocused);
-  };
-
-  const handleInputFocus = () => {
-    setIsSearchFocused(true);
-    setShowSuggestions(true);
-  };
-
-  const handleRecentSearchClick = (searchTerm: string) => {
-    setSearchInput(searchTerm);
-    navigate(`/?search=${encodeURIComponent(searchTerm)}`);
-    setShowSuggestions(false);
-    setIsSearchFocused(false);
+    setShowSuggestions(value.length > 0);
   };
 
   const getSuggestionIcon = (type: SearchSuggestion["type"]) => {
@@ -169,11 +125,7 @@ export function Header() {
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link
-            to="/"
-            className="flex items-center space-x-2"
-            onClick={() => clearSearch()}
-          >
+          <Link to="/" className="flex items-center space-x-2">
             <div className="h-8 w-8 bg-gradient-to-r from-[#1890ff] to-[#722ed1] rounded-lg flex items-center justify-center">
               <ShoppingBag className="h-5 w-5 text-white" />
             </div>
@@ -278,16 +230,9 @@ export function Header() {
                   placeholder="Search for offers, brands, categories..."
                   value={searchInput}
                   onChange={(e) => handleInputChange(e.target.value)}
-                  onFocus={handleInputFocus}
-                  className={cn(
-                    "pl-10 pr-12 w-full focus:ring-2 focus:ring-[#1890ff] focus:border-[#1890ff] transition-all",
-                    showSuggestions && "rounded-b-none border-b-0",
-                  )}
+                  className="pl-10 pr-12 w-full focus:ring-2 focus:ring-[#1890ff] focus:border-[#1890ff] transition-all"
                 />
-                {isLoading && (
-                  <Loader2 className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 animate-spin" />
-                )}
-                {searchInput && !isLoading && (
+                {searchInput && (
                   <Button
                     type="button"
                     variant="ghost"
@@ -295,7 +240,6 @@ export function Header() {
                     className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0 hover:bg-gray-100"
                     onClick={() => {
                       setSearchInput("");
-                      updateQuery("");
                       setShowSuggestions(false);
                     }}
                   >
@@ -303,104 +247,6 @@ export function Header() {
                   </Button>
                 )}
               </form>
-
-              {/* Search Suggestions Dropdown */}
-              {showSuggestions && (
-                <Card className="absolute top-full left-0 right-0 z-50 border-t-0 rounded-t-none shadow-lg">
-                  <CardContent className="p-0 max-h-96 overflow-y-auto">
-                    {/* Current suggestions based on input */}
-                    {suggestions.length > 0 && (
-                      <div className="p-2">
-                        <div className="text-xs font-medium text-gray-500 px-2 py-1 mb-1">
-                          Suggestions
-                        </div>
-                        {suggestions.map((suggestion) => (
-                          <button
-                            key={suggestion.id}
-                            onClick={() => handleSuggestionClick(suggestion)}
-                            className="w-full flex items-center gap-3 px-3 py-2 text-left hover:bg-gray-50 rounded transition-colors"
-                          >
-                            {getSuggestionIcon(suggestion.type)}
-                            <div className="flex-1 min-w-0">
-                              <div className="text-sm font-medium truncate">
-                                {suggestion.text}
-                              </div>
-                              <div className="text-xs text-gray-500 flex items-center gap-2">
-                                <span>{getTypeLabel(suggestion.type)}</span>
-                                {suggestion.count && (
-                                  <span>• {suggestion.count} results</span>
-                                )}
-                                {suggestion.category && (
-                                  <span>• in {suggestion.category}</span>
-                                )}
-                              </div>
-                            </div>
-                            <ArrowRight className="w-4 h-4 text-gray-400" />
-                          </button>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* Recent searches when no input or no suggestions */}
-                    {(searchInput.length === 0 || suggestions.length === 0) &&
-                      recentSearches.length > 0 && (
-                        <div className="p-2 border-t">
-                          <div className="text-xs font-medium text-gray-500 px-2 py-1 mb-1 flex items-center gap-1">
-                            <Clock className="w-3 h-3" />
-                            Recent searches
-                          </div>
-                          {recentSearches.slice(0, 5).map((search, index) => (
-                            <button
-                              key={index}
-                              onClick={() => handleRecentSearchClick(search)}
-                              className="w-full flex items-center gap-3 px-3 py-2 text-left hover:bg-gray-50 rounded transition-colors"
-                            >
-                              <Clock className="w-4 h-4 text-gray-400" />
-                              <div className="flex-1 text-sm truncate">
-                                {search}
-                              </div>
-                              <ArrowRight className="w-4 h-4 text-gray-400" />
-                            </button>
-                          ))}
-                        </div>
-                      )}
-
-                    {/* Popular searches */}
-                    {searchInput.length === 0 && (
-                      <div className="p-2 border-t">
-                        <div className="text-xs font-medium text-gray-500 px-2 py-1 mb-1 flex items-center gap-1">
-                          <TrendingUp className="w-3 h-3" />
-                          Popular searches
-                        </div>
-                        {popularSearches.slice(0, 4).map((search, index) => (
-                          <button
-                            key={index}
-                            onClick={() => handleRecentSearchClick(search)}
-                            className="w-full flex items-center gap-3 px-3 py-2 text-left hover:bg-gray-50 rounded transition-colors"
-                          >
-                            <TrendingUp className="w-4 h-4 text-gray-400" />
-                            <div className="flex-1 text-sm truncate">
-                              {search}
-                            </div>
-                            <ArrowRight className="w-4 h-4 text-gray-400" />
-                          </button>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* Empty state */}
-                    {searchInput.length > 0 && suggestions.length === 0 && (
-                      <div className="p-4 text-center text-gray-500">
-                        <Search className="w-8 h-8 mx-auto mb-2 text-gray-300" />
-                        <div className="text-sm">No suggestions found</div>
-                        <div className="text-xs">
-                          Press Enter to search for "{searchInput}"
-                        </div>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              )}
             </div>
           </div>
 
