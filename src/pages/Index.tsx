@@ -39,6 +39,7 @@ export default function Index() {
   const featuredParam = searchParams.get("featured");
   const newParam = searchParams.get("new");
   const discountParam = searchParams.get("discount");
+  const vendorParam = searchParams.get("vendor");
 
   useEffect(() => {
     let filtered = offers;
@@ -54,6 +55,12 @@ export default function Index() {
       filtered = offers.filter((offer) => offer.isNew);
     } else if (discountParam) {
       filtered = offers.filter((offer) => offer.discount && offer.discount > 0);
+    } else if (vendorParam) {
+      filtered = offers.filter(
+        (offer) =>
+          offer.vendor.name.toLowerCase() ===
+          decodeURIComponent(vendorParam).toLowerCase(),
+      );
     } else {
       // Apply current filters
       filtered = filterOffers(filters);
@@ -66,6 +73,7 @@ export default function Index() {
     featuredParam,
     newParam,
     discountParam,
+    vendorParam,
     filters,
   ]);
 
@@ -200,6 +208,7 @@ export default function Index() {
             <PromoBannerSection />
           </div>
         )}
+
       {/* Top Deals Section - Only show on homepage */}
       {!searchQuery &&
         !categoryParam &&
