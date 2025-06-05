@@ -196,6 +196,15 @@ export function Header() {
 
                 <NavigationMenuItem>
                   <Link
+                    to="/shops"
+                    className="text-sm font-medium hover:text-[#1890ff] transition-colors"
+                  >
+                    Shops
+                  </Link>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <Link
                     to="/tickets"
                     className="text-sm font-medium hover:text-[#1890ff] transition-colors"
                   >
@@ -332,6 +341,12 @@ export function Header() {
                       className="block px-3 py-2 text-sm font-medium hover:bg-gray-100 rounded transition-colors"
                     >
                       Deals
+                    </Link>
+                    <Link
+                      to="/shops"
+                      className="block px-3 py-2 text-sm font-medium hover:bg-gray-100 rounded transition-colors"
+                    >
+                      Shops
                     </Link>
                     <Link
                       to="/tickets"
