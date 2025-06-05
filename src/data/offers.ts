@@ -29,7 +29,7 @@ export const offers: Offer[] = [
       "https://picsum.photos/600/400?random=4",
     ],
     vendor: {
-      name: "TechStore Pro",
+      name: "TechWorld Electronics",
       rating: 4.8,
       verified: true,
     },
@@ -64,7 +64,7 @@ export const offers: Offer[] = [
       "https://picsum.photos/600/400?random=7",
     ],
     vendor: {
-      name: "Fashion Elite",
+      name: "Fashion Forward",
       rating: 4.6,
       verified: true,
     },
