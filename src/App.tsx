@@ -11,7 +11,6 @@ import { ReviewProvider } from "@/contexts/ReviewContext";
 import { SearchProvider } from "@/contexts/SearchContext";
 import { ShopProvider } from "@/contexts/ShopContext";
 import Index from "./pages/Index";
-import SearchResults from "./pages/SearchResults";
 import OfferDetails from "./pages/OfferDetails";
 import ShopPage from "./pages/ShopPage";
 import Profile from "./pages/Profile";
@@ -40,7 +39,6 @@ const App = () => (
                     <BrowserRouter>
                       <Routes>
                         <Route path="/" element={<Index />} />
-                        <Route path="/search" element={<SearchResults />} />
                         <Route path="/offer/:id" element={<OfferDetails />} />
                         <Route path="/shop/:id" element={<ShopPage />} />
                         <Route path="/profile" element={<Profile />} />
