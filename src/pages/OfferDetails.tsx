@@ -215,71 +215,10 @@ export default function OfferDetails() {
                 </TabsContent>
 
                 <TabsContent value="reviews" className="mt-6">
-                  <div className="space-y-6">
-                    <div className="flex items-center gap-4">
-                      <div className="text-3xl font-bold">{offer.rating}</div>
-                      <div>
-                        <div className="flex items-center gap-1 mb-1">
-                          {Array.from({ length: 5 }).map((_, i) => (
-                            <Star
-                              key={i}
-                              className={cn(
-                                "h-5 w-5",
-                                i < Math.floor(offer.rating)
-                                  ? "fill-yellow-400 text-yellow-400"
-                                  : "text-gray-300",
-                              )}
-                            />
-                          ))}
-                        </div>
-                        <div className="text-sm text-gray-600">
-                          Based on {offer.reviewCount} reviews
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Sample Reviews */}
-                    <div className="space-y-4">
-                      {[
-                        {
-                          name: "John D.",
-                          rating: 5,
-                          comment:
-                            "Excellent quality and fast delivery. Highly recommended!",
-                        },
-                        {
-                          name: "Sarah M.",
-                          rating: 4,
-                          comment:
-                            "Great value for money. Very satisfied with my purchase.",
-                        },
-                        {
-                          name: "Mike R.",
-                          rating: 5,
-                          comment: "Outstanding product! Exactly as described.",
-                        },
-                      ].map((review, index) => (
-                        <div key={index} className="p-4 bg-gray-50 rounded-lg">
-                          <div className="flex items-center gap-2 mb-2">
-                            <span className="font-medium">{review.name}</span>
-                            <div className="flex items-center gap-1">
-                              {Array.from({ length: 5 }).map((_, i) => (
-                                <Star
-                                  key={i}
-                                  className={cn(
-                                    "h-4 w-4",
-                                    i < review.rating
-                                      ? "fill-yellow-400 text-yellow-400"
-                                      : "text-gray-300",
-                                  )}
-                                />
-                              ))}
-                            </div>
-                          </div>
-                          <p className="text-gray-700">{review.comment}</p>
-                        </div>
-                      ))}
-                    </div>
+                  <div className="text-center py-8">
+                    <p className="text-gray-600">
+                      Reviews section temporarily unavailable
+                    </p>
                   </div>
                 </TabsContent>
               </Tabs>
