@@ -25,20 +25,30 @@ import {
   Truck,
   RotateCcw,
   MessageSquare,
+  Store,
+  UserPlus,
+  UserCheck,
+  Award,
+  Users,
+  Package,
 } from "lucide-react";
 import { getOfferById, formatPrice } from "@/lib/offers";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { OfferCard } from "@/components/OfferCard";
 import { offers } from "@/data/offers";
+import { shops } from "@/data/shops";
 import { cn } from "@/lib/utils";
 import { useWishlist } from "@/contexts/WishlistContext";
+import { useShop } from "@/contexts/ShopContext";
 import { ReviewsSection } from "@/components/ReviewsSection";
+import { toast } from "sonner";
 
 export default function OfferDetails() {
   const { id } = useParams<{ id: string }>();
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+  const { followShop, unfollowShop, isFollowing } = useShop();
 
   if (!id) {
     return <Navigate to="/404" replace />;
@@ -52,6 +62,10 @@ export default function OfferDetails() {
 
   const isLiked = isInWishlist(offer.id);
 
+  // Find shop data for this offer
+  const shop = shops.find((s) => s.name === offer.vendor.name);
+  const isFollowingShop = shop ? isFollowing(shop.id) : false;
+
   const handleToggleWishlist = () => {
     if (isLiked) {
       removeFromWishlist(offer.id);
@@ -60,9 +74,27 @@ export default function OfferDetails() {
     }
   };
 
+  const handleToggleFollowShop = () => {
+    if (!shop) return;
+
+    if (isFollowingShop) {
+      unfollowShop(shop.id);
+      toast.success(`Unfollowed ${shop.name}`);
+    } else {
+      followShop(shop);
+      toast.success(`Now following ${shop.name}!`);
+    }
+  };
+
   const relatedOffers = offers
     .filter((o) => o.id !== offer.id && o.category === offer.category)
     .slice(0, 4);
+
+  const shopOffers = shop
+    ? offers
+        .filter((o) => o.vendor.name === shop.name && o.id !== offer.id)
+        .slice(0, 3)
+    : [];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -230,19 +262,163 @@ export default function OfferDetails() {
                   {offer.title}
                 </h1>
 
-                {/* Vendor Info */}
-                <div className="flex items-center gap-2 mb-4">
-                  <span className="text-gray-700">{offer.vendor.name}</span>
-                  {offer.vendor.verified && (
-                    <Verified className="h-5 w-5 text-blue-500" />
-                  )}
-                  <div className="flex items-center gap-1">
-                    <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                    <span className="text-sm text-gray-600">
-                      {offer.vendor.rating}
-                    </span>
+                {/* Shop Information Section */}
+                {shop ? (
+                  <Card className="mb-6 border-blue-100 bg-blue-50/30">
+                    <CardContent className="p-4">
+                      <div className="flex items-start gap-4">
+                        <div className="flex-shrink-0">
+                          <div className="relative">
+                            <img
+                              src={
+                                shop.avatar ||
+                                "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=60&h=60&fit=crop"
+                              }
+                              alt={shop.name}
+                              className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-sm"
+                            />
+                            {shop.verified && (
+                              <div className="absolute -bottom-1 -right-1 bg-blue-500 rounded-full p-1">
+                                <Verified className="h-3 w-3 text-white" />
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Link
+                              to={`/shop/${shop.id}`}
+                              className="text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors"
+                            >
+                              {shop.name}
+                            </Link>
+                            <Badge
+                              variant="secondary"
+                              className={cn(
+                                "text-xs",
+                                shop.businessType === "enterprise"
+                                  ? "bg-purple-100 text-purple-700"
+                                  : shop.businessType === "business"
+                                    ? "bg-blue-100 text-blue-700"
+                                    : "bg-green-100 text-green-700",
+                              )}
+                            >
+                              {shop.businessType}
+                            </Badge>
+                          </div>
+
+                          <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                            {shop.description}
+                          </p>
+
+                          <div className="grid grid-cols-2 gap-4 mb-3">
+                            <div className="flex items-center gap-2 text-sm text-gray-600">
+                              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                              <span>
+                                {shop.rating} ({shop.reviewCount} reviews)
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-2 text-sm text-gray-600">
+                              <Users className="h-4 w-4 text-blue-500" />
+                              <span>{shop.stats.followerCount} followers</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-sm text-gray-600">
+                              <Package className="h-4 w-4 text-green-500" />
+                              <span>{shop.totalOffers} offers</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-sm text-gray-600">
+                              <Clock className="h-4 w-4 text-orange-500" />
+                              <span>Response: {shop.stats.responseTime}</span>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
+                            <MapPin className="h-4 w-4" />
+                            <span>{shop.location}</span>
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            <Button
+                              variant={isFollowingShop ? "outline" : "default"}
+                              size="sm"
+                              onClick={handleToggleFollowShop}
+                              className={cn(
+                                "flex-1",
+                                isFollowingShop &&
+                                  "border-green-200 text-green-700 hover:bg-green-50",
+                              )}
+                            >
+                              {isFollowingShop ? (
+                                <>
+                                  <UserCheck className="h-4 w-4 mr-2" />
+                                  Following
+                                </>
+                              ) : (
+                                <>
+                                  <UserPlus className="h-4 w-4 mr-2" />
+                                  Follow Shop
+                                </>
+                              )}
+                            </Button>
+                            <Link to={`/shop/${shop.id}`}>
+                              <Button variant="outline" size="sm">
+                                <Store className="h-4 w-4 mr-2" />
+                                Visit Shop
+                              </Button>
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+
+                      {shopOffers.length > 0 && (
+                        <div className="mt-4 pt-4 border-t border-blue-200">
+                          <h4 className="text-sm font-medium text-gray-900 mb-2">
+                            More from this shop:
+                          </h4>
+                          <div className="grid grid-cols-3 gap-2">
+                            {shopOffers.map((shopOffer) => (
+                              <Link
+                                key={shopOffer.id}
+                                to={`/offer/${shopOffer.id}`}
+                                className="group"
+                              >
+                                <div className="relative overflow-hidden rounded-md">
+                                  <img
+                                    src={shopOffer.images[0]}
+                                    alt={shopOffer.title}
+                                    className="w-full h-20 object-cover group-hover:scale-105 transition-transform"
+                                  />
+                                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors"></div>
+                                </div>
+                                <p className="text-xs text-gray-600 mt-1 line-clamp-1 group-hover:text-blue-600">
+                                  {shopOffer.title}
+                                </p>
+                                <p className="text-xs font-medium text-gray-900">
+                                  {formatPrice(shopOffer.price)}
+                                </p>
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                ) : (
+                  // Fallback vendor info
+                  <div className="flex items-center gap-2 mb-4">
+                    <span className="text-gray-700">{offer.vendor.name}</span>
+                    {offer.vendor.verified && (
+                      <Verified className="h-5 w-5 text-blue-500" />
+                    )}
+                    <div className="flex items-center gap-1">
+                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                      <span className="text-sm text-gray-600">
+                        {offer.vendor.rating}
+                      </span>
+                    </div>
                   </div>
-                </div>
+                )}
 
                 {/* Price */}
                 <div className="mb-6">
