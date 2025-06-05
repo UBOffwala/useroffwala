@@ -12,6 +12,7 @@ import { ShopProvider } from "@/contexts/ShopContext";
 import Index from "./pages/Index";
 import OfferDetails from "./pages/OfferDetails";
 import ShopPage from "./pages/ShopPage";
+import Shops from "./pages/Shops";
 import Profile from "./pages/Profile";
 import Wishlist from "./pages/Wishlist";
 import Categories from "./pages/Categories";
@@ -39,6 +40,7 @@ const App = () => (
                       <Route path="/" element={<Index />} />
                       <Route path="/offer/:id" element={<OfferDetails />} />
                       <Route path="/shop/:id" element={<ShopPage />} />
+                      <Route path="/shops" element={<Shops />} />
                       <Route path="/profile" element={<Profile />} />
                       <Route path="/wishlist" element={<Wishlist />} />
                       <Route path="/categories" element={<Categories />} />

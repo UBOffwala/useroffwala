@@ -18,6 +18,27 @@ export interface Shop {
   website?: string;
   phone?: string;
   email?: string;
+  workingHours?: {
+    monday?: string;
+    tuesday?: string;
+    wednesday?: string;
+    thursday?: string;
+    friday?: string;
+    saturday?: string;
+    sunday?: string;
+    timezone?: string;
+    note?: string;
+  };
+  sellerInfo?: {
+    ownerName?: string;
+    businessLicense?: string;
+    taxId?: string;
+    bankingInfo?: string;
+    experience?: string;
+    specializations?: string[];
+    languages?: string[];
+    certifications?: string[];
+  };
   socialLinks?: {
     website?: string;
     facebook?: string;

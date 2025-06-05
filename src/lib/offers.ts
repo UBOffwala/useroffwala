@@ -71,8 +71,11 @@ export function searchOffers(query: string): Offer[] {
     (offer) =>
       offer.title.toLowerCase().includes(lowercaseQuery) ||
       offer.description.toLowerCase().includes(lowercaseQuery) ||
+      offer.shortDescription.toLowerCase().includes(lowercaseQuery) ||
       offer.tags.some((tag) => tag.toLowerCase().includes(lowercaseQuery)) ||
-      offer.category.toLowerCase().includes(lowercaseQuery),
+      offer.category.toLowerCase().includes(lowercaseQuery) ||
+      offer.vendor.name.toLowerCase().includes(lowercaseQuery) ||
+      offer.location?.toLowerCase().includes(lowercaseQuery),
   );
 }
 

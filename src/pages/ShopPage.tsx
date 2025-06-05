@@ -39,6 +39,7 @@ import {
   Truck,
   RotateCcw,
   ExternalLink,
+  User,
 } from "lucide-react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -71,13 +72,12 @@ export default function ShopPage() {
 
   const isFollowingShop = isFollowing(shop.id);
 
-  // Get offers from this shop (mock implementation)
+  // Get offers from this shop
   useEffect(() => {
-    // In a real app, this would fetch offers for the specific shop
-    const mockShopOffers = offers
-      .filter((offer) => offer.vendor.name === shop.name)
-      .slice(0, 12); // Limit for demo
-    setShopOffers(mockShopOffers);
+    const shopOffersData = offers.filter(
+      (offer) => offer.vendor.name === shop.name,
+    );
+    setShopOffers(shopOffersData);
   }, [shop.name]);
 
   const handleFollowToggle = () => {
@@ -115,10 +115,10 @@ export default function ShopPage() {
         return (b.discount || 0) - (a.discount || 0);
       case "newest":
       default:
-        return (
-          new Date(b.createdAt || 0).getTime() -
-          new Date(a.createdAt || 0).getTime()
-        );
+        // Sort by featured first, then new, then by ID (as a proxy for newest)
+        if (b.isFeatured !== a.isFeatured) return b.isFeatured ? 1 : -1;
+        if (b.isNew !== a.isNew) return b.isNew ? 1 : -1;
+        return parseInt(b.id) - parseInt(a.id);
     }
   });
 
@@ -368,7 +368,7 @@ export default function ShopPage() {
           {/* About Tab */}
           <TabsContent value="about" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Shop Stats */}
+              {/* Shop Stats and Business Info */}
               <Card className="lg:col-span-2">
                 <CardHeader>
                   <CardTitle>Shop Statistics</CardTitle>
@@ -389,7 +389,7 @@ export default function ShopPage() {
                     </div>
                     <div className="text-center p-4 bg-purple-50 rounded-lg">
                       <div className="text-2xl font-bold text-purple-600">
-                        {shop.totalOffers}
+                        {shopOffers.length}
                       </div>
                       <div className="text-sm text-gray-600">Active Offers</div>
                     </div>
@@ -432,79 +432,224 @@ export default function ShopPage() {
                       )}
                     </div>
                   </div>
+
+                  {/* Seller Information */}
+                  {shop.sellerInfo && (
+                    <>
+                      <Separator />
+                      <div className="space-y-4">
+                        <h4 className="font-semibold">Seller Information</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                          {shop.sellerInfo.ownerName && (
+                            <div className="flex items-center gap-2">
+                              <User className="w-4 h-4 text-gray-500" />
+                              <span>Owner: {shop.sellerInfo.ownerName}</span>
+                            </div>
+                          )}
+                          {shop.sellerInfo.experience && (
+                            <div className="flex items-center gap-2">
+                              <Award className="w-4 h-4 text-gray-500" />
+                              <span>
+                                Experience: {shop.sellerInfo.experience}
+                              </span>
+                            </div>
+                          )}
+                          {shop.sellerInfo.businessLicense && (
+                            <div className="flex items-center gap-2">
+                              <Shield className="w-4 h-4 text-gray-500" />
+                              <span>
+                                License: {shop.sellerInfo.businessLicense}
+                              </span>
+                            </div>
+                          )}
+                          {shop.sellerInfo.languages && (
+                            <div className="flex items-center gap-2">
+                              <Globe className="w-4 h-4 text-gray-500" />
+                              <span>
+                                Languages:{" "}
+                                {shop.sellerInfo.languages.join(", ")}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+
+                        {shop.sellerInfo.specializations && (
+                          <div>
+                            <h5 className="font-medium mb-2">
+                              Specializations
+                            </h5>
+                            <div className="flex flex-wrap gap-2">
+                              {shop.sellerInfo.specializations.map((spec) => (
+                                <Badge
+                                  key={spec}
+                                  variant="outline"
+                                  className="text-xs"
+                                >
+                                  {spec}
+                                </Badge>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {shop.sellerInfo.certifications && (
+                          <div>
+                            <h5 className="font-medium mb-2">Certifications</h5>
+                            <div className="flex flex-wrap gap-2">
+                              {shop.sellerInfo.certifications.map((cert) => (
+                                <Badge
+                                  key={cert}
+                                  variant="secondary"
+                                  className="text-xs"
+                                >
+                                  <Award className="w-3 h-3 mr-1" />
+                                  {cert}
+                                </Badge>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </>
+                  )}
                 </CardContent>
               </Card>
 
-              {/* Contact Information */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Contact Information</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {shop.phone && (
-                    <div className="flex items-center gap-3">
-                      <Phone className="w-4 h-4 text-gray-500" />
-                      <a
-                        href={`tel:${shop.phone}`}
-                        className="text-sm hover:text-[#1890ff]"
-                      >
-                        {shop.phone}
-                      </a>
-                    </div>
-                  )}
-
-                  {shop.email && (
-                    <div className="flex items-center gap-3">
-                      <Mail className="w-4 h-4 text-gray-500" />
-                      <a
-                        href={`mailto:${shop.email}`}
-                        className="text-sm hover:text-[#1890ff]"
-                      >
-                        {shop.email}
-                      </a>
-                    </div>
-                  )}
-
-                  {shop.website && (
-                    <div className="flex items-center gap-3">
-                      <Globe className="w-4 h-4 text-gray-500" />
-                      <a
-                        href={shop.website}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-sm hover:text-[#1890ff] flex items-center gap-1"
-                      >
-                        Visit Website
-                        <ExternalLink className="w-3 h-3" />
-                      </a>
-                    </div>
-                  )}
-
-                  <Separator />
-
-                  {/* Social Links */}
-                  <div>
-                    <h5 className="font-medium mb-3">Follow Us</h5>
-                    <div className="flex gap-2">
-                      {shop.socialLinks?.facebook && (
-                        <Button variant="outline" size="sm">
-                          <Facebook className="w-4 h-4" />
-                        </Button>
+              {/* Contact Information and Working Hours */}
+              <div className="space-y-6">
+                {/* Working Hours */}
+                {shop.workingHours && (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Clock className="w-5 h-5" />
+                        Working Hours
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      {Object.entries(shop.workingHours).map(([day, hours]) => {
+                        if (day === "timezone" || day === "note" || !hours)
+                          return null;
+                        const today = new Date()
+                          .toLocaleDateString("en-US", { weekday: "long" })
+                          .toLowerCase();
+                        const isToday = today === day.toLowerCase();
+                        return (
+                          <div
+                            key={day}
+                            className={cn(
+                              "flex justify-between text-sm",
+                              isToday && "font-medium text-blue-600",
+                            )}
+                          >
+                            <span className="capitalize">{day}</span>
+                            <span>{hours}</span>
+                          </div>
+                        );
+                      })}
+                      {shop.workingHours.timezone && (
+                        <div className="pt-2 border-t text-xs text-gray-500">
+                          Timezone: {shop.workingHours.timezone}
+                        </div>
                       )}
-                      {shop.socialLinks?.twitter && (
-                        <Button variant="outline" size="sm">
-                          <Twitter className="w-4 h-4" />
-                        </Button>
+                      {shop.workingHours.note && (
+                        <div className="p-2 bg-blue-50 rounded text-xs text-blue-700">
+                          {shop.workingHours.note}
+                        </div>
                       )}
-                      {shop.socialLinks?.instagram && (
-                        <Button variant="outline" size="sm">
-                          <Instagram className="w-4 h-4" />
-                        </Button>
-                      )}
+                    </CardContent>
+                  </Card>
+                )}
+
+                {/* Contact Information */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Contact Information</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {shop.phone && (
+                      <div className="flex items-center gap-3">
+                        <Phone className="w-4 h-4 text-gray-500" />
+                        <a
+                          href={`tel:${shop.phone}`}
+                          className="text-sm hover:text-[#1890ff]"
+                        >
+                          {shop.phone}
+                        </a>
+                      </div>
+                    )}
+
+                    {shop.email && (
+                      <div className="flex items-center gap-3">
+                        <Mail className="w-4 h-4 text-gray-500" />
+                        <a
+                          href={`mailto:${shop.email}`}
+                          className="text-sm hover:text-[#1890ff]"
+                        >
+                          {shop.email}
+                        </a>
+                      </div>
+                    )}
+
+                    {shop.website && (
+                      <div className="flex items-center gap-3">
+                        <Globe className="w-4 h-4 text-gray-500" />
+                        <a
+                          href={shop.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm hover:text-[#1890ff] flex items-center gap-1"
+                        >
+                          Visit Website
+                          <ExternalLink className="w-3 h-3" />
+                        </a>
+                      </div>
+                    )}
+
+                    <Separator />
+
+                    {/* Social Links */}
+                    <div>
+                      <h5 className="font-medium mb-3">Follow Us</h5>
+                      <div className="flex gap-2">
+                        {shop.socialLinks?.facebook && (
+                          <Button variant="outline" size="sm" asChild>
+                            <a
+                              href={shop.socialLinks.facebook}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <Facebook className="w-4 h-4" />
+                            </a>
+                          </Button>
+                        )}
+                        {shop.socialLinks?.twitter && (
+                          <Button variant="outline" size="sm" asChild>
+                            <a
+                              href={shop.socialLinks.twitter}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <Twitter className="w-4 h-4" />
+                            </a>
+                          </Button>
+                        )}
+                        {shop.socialLinks?.instagram && (
+                          <Button variant="outline" size="sm" asChild>
+                            <a
+                              href={shop.socialLinks.instagram}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <Instagram className="w-4 h-4" />
+                            </a>
+                          </Button>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
           </TabsContent>
 

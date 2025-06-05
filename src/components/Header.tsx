@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { useUser } from "@/contexts/UserContext";
 import { LocationSelector } from "@/components/LocationSelector";
+import { SearchSuggestions } from "@/components/SearchSuggestions";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -54,6 +55,7 @@ import { cn } from "@/lib/utils";
 export function Header() {
   const [searchInput, setSearchInput] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const { wishlistCount } = useWishlist();
@@ -87,37 +89,24 @@ export function Header() {
 
   const handleInputChange = (value: string) => {
     setSearchInput(value);
-    setShowSuggestions(value.length > 0);
+    setShowSuggestions(true);
   };
 
-  const getSuggestionIcon = (type: SearchSuggestion["type"]) => {
-    switch (type) {
-      case "offer":
-        return <Package className="w-4 h-4 text-blue-500" />;
-      case "category":
-        return <Tag className="w-4 h-4 text-green-500" />;
-      case "vendor":
-        return <Store className="w-4 h-4 text-purple-500" />;
-      case "brand":
-        return <Award className="w-4 h-4 text-orange-500" />;
-      default:
-        return <Search className="w-4 h-4 text-gray-500" />;
-    }
+  const handleInputFocus = () => {
+    setIsSearchFocused(true);
+    setShowSuggestions(true);
   };
 
-  const getTypeLabel = (type: SearchSuggestion["type"]) => {
-    switch (type) {
-      case "offer":
-        return "Product";
-      case "category":
-        return "Category";
-      case "vendor":
-        return "Vendor";
-      case "brand":
-        return "Brand";
-      default:
-        return "";
-    }
+  const handleSuggestionSelect = (suggestion: any) => {
+    navigate(suggestion.link);
+    setSearchInput("");
+    setShowSuggestions(false);
+    setIsSearchFocused(false);
+  };
+
+  const handleCloseSuggestions = () => {
+    setShowSuggestions(false);
+    setIsSearchFocused(false);
   };
 
   return (
@@ -207,6 +196,15 @@ export function Header() {
 
                 <NavigationMenuItem>
                   <Link
+                    to="/shops"
+                    className="text-sm font-medium hover:text-[#1890ff] transition-colors"
+                  >
+                    Shops
+                  </Link>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <Link
                     to="/tickets"
                     className="text-sm font-medium hover:text-[#1890ff] transition-colors"
                   >
@@ -227,10 +225,16 @@ export function Header() {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <Input
                   type="text"
-                  placeholder="Search for offers, brands, categories..."
+                  placeholder="Search for offers, shops, categories..."
                   value={searchInput}
                   onChange={(e) => handleInputChange(e.target.value)}
-                  className="pl-10 pr-12 w-full focus:ring-2 focus:ring-[#1890ff] focus:border-[#1890ff] transition-all"
+                  onFocus={handleInputFocus}
+                  className={cn(
+                    "pl-10 pr-12 w-full focus:ring-2 focus:ring-[#1890ff] focus:border-[#1890ff] transition-all",
+                    showSuggestions &&
+                      (searchInput.length > 0 || isSearchFocused) &&
+                      "rounded-b-none",
+                  )}
                 />
                 {searchInput && (
                   <Button
@@ -247,6 +251,15 @@ export function Header() {
                   </Button>
                 )}
               </form>
+
+              <SearchSuggestions
+                query={searchInput}
+                isVisible={
+                  showSuggestions && (searchInput.length > 0 || isSearchFocused)
+                }
+                onSelectSuggestion={handleSuggestionSelect}
+                onClose={handleCloseSuggestions}
+              />
             </div>
           </div>
 
@@ -330,6 +343,12 @@ export function Header() {
                       className="block px-3 py-2 text-sm font-medium hover:bg-gray-100 rounded transition-colors"
                     >
                       Deals
+                    </Link>
+                    <Link
+                      to="/shops"
+                      className="block px-3 py-2 text-sm font-medium hover:bg-gray-100 rounded transition-colors"
+                    >
+                      Shops
                     </Link>
                     <Link
                       to="/tickets"
