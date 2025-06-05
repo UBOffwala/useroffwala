@@ -33,6 +33,7 @@ import { OfferCard } from "@/components/OfferCard";
 import { offers } from "@/data/offers";
 import { cn } from "@/lib/utils";
 import { useWishlist } from "@/contexts/WishlistContext";
+import { ReviewsSection } from "@/components/ReviewsSection";
 
 export default function OfferDetails() {
   const { id } = useParams<{ id: string }>();
@@ -215,11 +216,7 @@ export default function OfferDetails() {
                 </TabsContent>
 
                 <TabsContent value="reviews" className="mt-6">
-                  <div className="text-center py-8">
-                    <p className="text-gray-600">
-                      Reviews section temporarily unavailable
-                    </p>
-                  </div>
+                  <ReviewsSection offerId={offer.id} />
                 </TabsContent>
               </Tabs>
             </div>
