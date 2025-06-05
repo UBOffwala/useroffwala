@@ -231,7 +231,9 @@ export function Header() {
                   onFocus={handleInputFocus}
                   className={cn(
                     "pl-10 pr-12 w-full focus:ring-2 focus:ring-[#1890ff] focus:border-[#1890ff] transition-all",
-                    showSuggestions && "rounded-b-none",
+                    showSuggestions &&
+                      (searchInput.length > 0 || isSearchFocused) &&
+                      "rounded-b-none",
                   )}
                 />
                 {searchInput && (
