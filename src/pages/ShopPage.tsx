@@ -528,16 +528,26 @@ export default function ShopPage() {
                     </CardHeader>
                     <CardContent className="space-y-3">
                       {Object.entries(shop.workingHours).map(([day, hours]) => {
-                        if (day === 'timezone' || day === 'note' || !hours) return null;
-                        const today = new Date().toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase();
+                        if (day === "timezone" || day === "note" || !hours)
+                          return null;
+                        const today = new Date()
+                          .toLocaleDateString("en-US", { weekday: "long" })
+                          .toLowerCase();
                         const isToday = today === day.toLowerCase();
                         return (
-                          <div key={day} className={cn("flex justify-between text-sm", isToday && "font-medium text-blue-600")}>
+                          <div
+                            key={day}
+                            className={cn(
+                              "flex justify-between text-sm",
+                              isToday && "font-medium text-blue-600",
+                            )}
+                          >
                             <span className="capitalize">{day}</span>
                             <span>{hours}</span>
                           </div>
                         );
                       })}
+                      {shop.workingHours.timezone && (
                         <div className="pt-2 border-t text-xs text-gray-500">
                           Timezone: {shop.workingHours.timezone}
                         </div>
