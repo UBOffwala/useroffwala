@@ -7,8 +7,13 @@ import { UserProvider } from "@/contexts/UserContext";
 import { WishlistProvider } from "@/contexts/WishlistContext";
 import { TicketProvider } from "@/contexts/TicketContext";
 import { LocationProvider } from "@/contexts/LocationContext";
+import { ReviewProvider } from "@/contexts/ReviewContext";
+import { SearchProvider } from "@/contexts/SearchContext";
+import { ShopProvider } from "@/contexts/ShopContext";
 import Index from "./pages/Index";
+import SearchResults from "./pages/SearchResults";
 import OfferDetails from "./pages/OfferDetails";
+import ShopPage from "./pages/ShopPage";
 import Profile from "./pages/Profile";
 import Wishlist from "./pages/Wishlist";
 import Categories from "./pages/Categories";
@@ -26,25 +31,36 @@ const App = () => (
       <WishlistProvider>
         <TicketProvider>
           <LocationProvider>
-            <TooltipProvider>
-              <Toaster />
-              <Sonner />
-              <BrowserRouter>
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/offer/:id" element={<OfferDetails />} />
-                  <Route path="/profile" element={<Profile />} />
-                  <Route path="/wishlist" element={<Wishlist />} />
-                  <Route path="/categories" element={<Categories />} />
-                  <Route path="/location" element={<LocationPage />} />
-                  <Route path="/tickets" element={<Tickets />} />
-                  <Route path="/tickets/new" element={<CreateTicket />} />
-                  <Route path="/tickets/:id" element={<TicketDetails />} />
-                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </BrowserRouter>
-            </TooltipProvider>
+            <ReviewProvider>
+              <SearchProvider>
+                <ShopProvider>
+                  <TooltipProvider>
+                    <Toaster />
+                    <Sonner />
+                    <BrowserRouter>
+                      <Routes>
+                        <Route path="/" element={<Index />} />
+                        <Route path="/search" element={<SearchResults />} />
+                        <Route path="/offer/:id" element={<OfferDetails />} />
+                        <Route path="/shop/:id" element={<ShopPage />} />
+                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/wishlist" element={<Wishlist />} />
+                        <Route path="/categories" element={<Categories />} />
+                        <Route path="/location" element={<LocationPage />} />
+                        <Route path="/tickets" element={<Tickets />} />
+                        <Route path="/tickets/new" element={<CreateTicket />} />
+                        <Route
+                          path="/tickets/:id"
+                          element={<TicketDetails />}
+                        />
+                        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                        <Route path="*" element={<NotFound />} />
+                      </Routes>
+                    </BrowserRouter>
+                  </TooltipProvider>
+                </ShopProvider>
+              </SearchProvider>
+            </ReviewProvider>
           </LocationProvider>
         </TicketProvider>
       </WishlistProvider>
