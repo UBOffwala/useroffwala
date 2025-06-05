@@ -15,13 +15,33 @@ interface OfferCardProps {
 
 export function OfferCard({ offer, className }: OfferCardProps) {
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+  const { followShop, unfollowShop, isFollowing } = useShop();
   const isLiked = isInWishlist(offer.id);
+
+  // Find shop data for this offer
+  const shop = shops.find(s => s.name === offer.vendor.name);
+  const isFollowingShop = shop ? isFollowing(shop.id) : false;
 
   const handleToggleWishlist = () => {
     if (isLiked) {
       removeFromWishlist(offer.id);
     } else {
       addToWishlist(offer);
+    }
+  };
+
+  const handleToggleFollowShop = (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent navigation to offer details
+    e.stopPropagation();
+
+    if (!shop) return;
+
+    if (isFollowingShop) {
+      unfollowShop(shop.id);
+      toast.success(`Unfollowed ${shop.name}`);
+    } else {
+      followShop(shop);
+      toast.success(`Now following ${shop.name}!`);
     }
   };
 
@@ -85,16 +105,51 @@ export function OfferCard({ offer, className }: OfferCardProps) {
           {offer.shortDescription}
         </p>
 
-        {/* Vendor Info */}
-        <div className="flex items-center gap-2 mb-3">
-          <span className="text-sm text-gray-700">{offer.vendor.name}</span>
-          {offer.vendor.verified && (
-            <Verified className="h-4 w-4 text-blue-500" />
-          )}
-          <div className="flex items-center gap-1 text-sm text-gray-600">
-            <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-            <span>{offer.vendor.rating}</span>
-          </div>
+            {/* Vendor info */}
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2 min-w-0">
+                {shop ? (
+                  <Link
+                    to={`/shop/${shop.id}`}
+                    className="text-sm text-gray-600 hover:text-[#1890ff] transition-colors truncate"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    {offer.vendor.name}
+                  </Link>
+                ) : (
+                  <span className="text-sm text-gray-600 truncate">{offer.vendor.name}</span>
+                )}
+                {offer.vendor.verified && (
+                  <Verified className="h-4 w-4 text-blue-500 flex-shrink-0" />
+                )}
+                <div className="flex items-center gap-1 flex-shrink-0">
+                  <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                  <span className="text-xs text-gray-600">
+                    {offer.vendor.rating}
+                  </span>
+                </div>
+              </div>
+
+              {shop && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleToggleFollowShop}
+                  className={cn(
+                    "h-6 px-2 text-xs",
+                    isFollowingShop
+                      ? "text-green-600 hover:text-green-700"
+                      : "text-gray-500 hover:text-[#1890ff]"
+                  )}
+                >
+                  {isFollowingShop ? (
+                    <UserCheck className="h-3 w-3" />
+                  ) : (
+                    <UserPlus className="h-3 w-3" />
+                  )}
+                </Button>
+              )}
+            </div>
         </div>
 
         {/* Rating and Reviews */}
