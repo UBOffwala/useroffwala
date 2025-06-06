@@ -44,6 +44,7 @@ import {
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { OfferCard } from "@/components/OfferCard";
+import { ShopReviewsSection } from "@/components/ShopReviewsSection";
 import { getShopById } from "@/data/shops";
 import { useShop } from "@/contexts/ShopContext";
 import { offers } from "@/data/offers";
@@ -395,7 +396,7 @@ export default function ShopPage() {
                     </div>
                     <div className="text-center p-4 bg-orange-50 rounded-lg">
                       <div className="text-2xl font-bold text-orange-600">
-                        {shop.rating}★
+                        {shop.rating}���
                       </div>
                       <div className="text-sm text-gray-600">
                         Average Rating
@@ -655,15 +656,7 @@ export default function ShopPage() {
 
           {/* Reviews Tab */}
           <TabsContent value="reviews" className="space-y-6">
-            <div className="text-center py-12">
-              <Star className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                Shop Reviews Coming Soon
-              </h3>
-              <p className="text-gray-600">
-                Customer reviews for this shop will be displayed here.
-              </p>
-            </div>
+            <ShopReviewsSection shopId={shop.id} />
           </TabsContent>
 
           {/* Policies Tab */}
