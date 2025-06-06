@@ -301,78 +301,22 @@ export default function Index() {
                       <div className="space-y-4 mb-6">
                         <h4 className="font-medium text-sm">Location</h4>
                         <div className="space-y-3">
-                          <Select
-                            value={shopFilters.city || ""}
-                            onValueChange={(value) =>
-                              setShopFilters((prev) => ({
-                                ...prev,
-                                city: value || undefined,
-                              }))
-                            }
-                          >
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select City" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="">All Cities</SelectItem>
-                              {cities.map((city) => (
-                                <SelectItem key={city} value={city}>
-                                  {city}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-
-                          <Select
-                            value={shopFilters.state || ""}
-                            onValueChange={(value) =>
-                              setShopFilters((prev) => ({
-                                ...prev,
-                                state: value || undefined,
-                              }))
-                            }
-                          >
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select State" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="">All States</SelectItem>
-                              {states.map((state) => (
-                                <SelectItem key={state} value={state}>
-                                  {state}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
-                      </div>
-
-                      {/* Shop Business Type */}
-                      <div className="space-y-4 mb-6">
-                        <h4 className="font-medium text-sm">Business Type</h4>
-                        <Select
-                          value={shopFilters.businessType || ""}
-                          onValueChange={(value) =>
-                            setShopFilters((prev) => ({
-                              ...prev,
-                              businessType: value || undefined,
-                            }))
-                          }
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="All Types" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="">All Types</SelectItem>
-                            <SelectItem value="individual">
-                              Individual
-                            </SelectItem>
-                            <SelectItem value="business">Business</SelectItem>
-                            <SelectItem value="enterprise">
-                              Enterprise
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
+                      <Select
+                        value={shopFilters.rating?.toString() || "any"}
+                        onValueChange={(value) =>
+                          setShopFilters(prev => ({ ...prev, rating: value === "any" ? undefined : Number(value) }))
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Any Rating" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="any">Any Rating</SelectItem>
+                          <SelectItem value="4">4+ Stars</SelectItem>
+                          <SelectItem value="4.5">4.5+ Stars</SelectItem>
+                          <SelectItem value="5">5 Stars</SelectItem>
+                        </SelectContent>
+                      </Select>
                       </div>
 
                       {/* Shop Rating Filter */}
