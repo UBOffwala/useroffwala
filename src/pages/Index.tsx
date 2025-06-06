@@ -320,11 +320,127 @@ export default function Index() {
                 showFilters ? "block" : "hidden",
               )}
             >
-              <CategoryFilter
-                filters={filters}
-                onFiltersChange={handleFiltersChange}
-                onClearFilters={clearFilters}
-              />
+              <Card className="p-6">
+                <h3 className="font-semibold mb-4">Filters</h3>
+
+                {showingShops && (
+                  <>
+                    {/* Shop Location Filters */}
+                    <div className="space-y-4 mb-6">
+                      <h4 className="font-medium text-sm">Location</h4>
+                      <div className="space-y-3">
+                        <Select
+                          value={shopFilters.city || ""}
+                          onValueChange={(value) =>
+                            setShopFilters(prev => ({ ...prev, city: value || undefined }))
+                          }
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select City" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="">All Cities</SelectItem>
+                            {cities.map(city => (
+                              <SelectItem key={city} value={city}>{city}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+
+                        <Select
+                          value={shopFilters.state || ""}
+                          onValueChange={(value) =>
+                            setShopFilters(prev => ({ ...prev, state: value || undefined }))
+                          }
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select State" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="">All States</SelectItem>
+                            {states.map(state => (
+                              <SelectItem key={state} value={state}>{state}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+
+                    {/* Shop Business Type */}
+                    <div className="space-y-4 mb-6">
+                      <h4 className="font-medium text-sm">Business Type</h4>
+                      <Select
+                        value={shopFilters.businessType || ""}
+                        onValueChange={(value) =>
+                          setShopFilters(prev => ({ ...prev, businessType: value || undefined }))
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="All Types" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="">All Types</SelectItem>
+                          <SelectItem value="individual">Individual</SelectItem>
+                          <SelectItem value="business">Business</SelectItem>
+                          <SelectItem value="enterprise">Enterprise</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {/* Shop Rating Filter */}
+                    <div className="space-y-4 mb-6">
+                      <h4 className="font-medium text-sm">Minimum Rating</h4>
+                      <Select
+                        value={shopFilters.rating?.toString() || ""}
+                        onValueChange={(value) =>
+                          setShopFilters(prev => ({ ...prev, rating: value ? Number(value) : undefined }))
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Any Rating" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="">Any Rating</SelectItem>
+                          <SelectItem value="4">4+ Stars</SelectItem>
+                          <SelectItem value="4.5">4.5+ Stars</SelectItem>
+                          <SelectItem value="5">5 Stars</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {/* Verified Shops Only */}
+                    <div className="space-y-4 mb-6">
+                      <label className="flex items-center space-x-2">
+                        <input
+                          type="checkbox"
+                          checked={shopFilters.verified || false}
+                          onChange={(e) =>
+                            setShopFilters(prev => ({ ...prev, verified: e.target.checked ? true : undefined }))
+                          }
+                          className="rounded"
+                        />
+                        <span className="text-sm">Verified shops only</span>
+                      </label>
+                    </div>
+
+                    {/* Clear Shop Filters */}
+                    <Button
+                      variant="outline"
+                      className="w-full"
+                      onClick={() => setShopFilters({})}
+                    >
+                      Clear Shop Filters
+                    </Button>
+                  </>
+                )}
+
+                {!showingShops && (
+                  <CategoryFilter
+                    filters={filters}
+                    onFiltersChange={handleFiltersChange}
+                    onClearFilters={clearFilters}
+                  />
+                )}
+              </Card>
             </div>
 
             {/* Results */}
@@ -345,13 +461,43 @@ export default function Index() {
                               ? "Best Deals"
                               : "All Offers"}
                   </h2>
-                  <p className="text-gray-600">
-                    {displayedOffers.length}{" "}
-                    {displayedOffers.length === 1 ? "offer" : "offers"} found
-                  </p>
+                  <div className="flex items-center gap-4 text-sm text-gray-600">
+                    {searchType === 'mixed' || searchType === 'offers' ? (
+                      <span>
+                        {displayedOffers.length} {displayedOffers.length === 1 ? "offer" : "offers"}
+                      </span>
+                    ) : null}
+                    {searchType === 'mixed' || searchType === 'shops' ? (
+                      <span>
+                        {displayedShops.length} {displayedShops.length === 1 ? "shop" : "shops"}
+                      </span>
+                    ) : null}
+                  </div>
                 </div>
 
                 <div className="flex items-center gap-2">
+                  {/* Sort Options for Shops */}
+                  {showingShops && (
+                    <Select
+                      value={shopFilters.sortBy || "relevance"}
+                      onValueChange={(value) =>
+                        setShopFilters(prev => ({ ...prev, sortBy: value as any }))
+                      }
+                    >
+                      <SelectTrigger className="w-40">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="relevance">Relevance</SelectItem>
+                        <SelectItem value="rating">Rating</SelectItem>
+                        <SelectItem value="followers">Followers</SelectItem>
+                        <SelectItem value="offers">Most Offers</SelectItem>
+                        <SelectItem value="alphabetical">A-Z</SelectItem>
+                        <SelectItem value="newest">Newest</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )}
+
                   <Button
                     variant={viewMode === "grid" ? "default" : "ghost"}
                     size="icon"
@@ -369,8 +515,50 @@ export default function Index() {
                 </div>
               </div>
 
-              {/* Offers Grid/List */}
-              {displayedOffers.length > 0 ? (
+              {/* Search Results Tabs for Mixed Results */}
+              {searchType === 'mixed' && (
+                <div className="flex gap-2 mb-6">
+                  <Button
+                    variant={!showingShops ? "default" : "outline"}
+                    className="gap-2"
+                    onClick={() => setShowingShops(false)}
+                  >
+                    <Package className="h-4 w-4" />
+                    Offers ({displayedOffers.length})
+                  </Button>
+                  <Button
+                    variant={showingShops ? "default" : "outline"}
+                    className="gap-2"
+                    onClick={() => setShowingShops(true)}
+                  >
+                    <Store className="h-4 w-4" />
+                    Shops ({displayedShops.length})
+                  </Button>
+                </div>
+              )}
+
+              {/* Shops Results */}
+              {showingShops && displayedShops.length > 0 && (
+                <div
+                  className={cn(
+                    "gap-6",
+                    viewMode === "grid"
+                      ? "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3"
+                      : "flex flex-col",
+                  )}
+                >
+                  {displayedShops.map((shop) => (
+                    <ShopCard
+                      key={shop.id}
+                      shop={shop}
+                      isListView={viewMode === "list"}
+                    />
+                  ))}
+                </div>
+              )}
+
+              {/* Offers Results */}
+              {!showingShops && displayedOffers.length > 0 && (
                 <div
                   className={cn(
                     "gap-6",
@@ -387,13 +575,20 @@ export default function Index() {
                     />
                   ))}
                 </div>
-              ) : (
+              )}
+
+              {/* No Results */}
+              {(!showingShops && displayedOffers.length === 0) || (showingShops && displayedShops.length === 0) ? (
                 <div className="text-center py-12">
                   <div className="text-gray-400 mb-4">
-                    <Gift className="h-16 w-16 mx-auto" />
+                    {showingShops ? (
+                      <Store className="h-16 w-16 mx-auto" />
+                    ) : (
+                      <Gift className="h-16 w-16 mx-auto" />
+                    )}
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                    No offers found
+                    No {showingShops ? 'shops' : 'offers'} found
                   </h3>
                   <p className="text-gray-600 mb-4">
                     Try adjusting your filters or search terms
