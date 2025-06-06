@@ -5,6 +5,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   TrendingUp,
   Zap,
   Gift,
@@ -13,24 +20,40 @@ import {
   Filter,
   Grid3X3,
   List,
+  Store,
+  Package,
+  MapPin,
 } from "lucide-react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { OfferCard } from "@/components/OfferCard";
+import { ShopCard } from "@/components/ShopCard";
 import { CategoryFilter } from "@/components/CategoryFilter";
 import { PromoBannerSection } from "@/components/PromoBanner";
 import { HorizontalBanners } from "@/components/HorizontalBanners";
 import { CategoryGrid } from "@/components/CategoryGrid";
 import { TopDealsSection } from "@/components/TopDealsSection";
-import { filterOffers, searchOffers, getFeaturedOffers } from "@/lib/offers";
+import { filterOffers, getFeaturedOffers } from "@/lib/offers";
+import {
+  performSearch,
+  getLocationSuggestions,
+  ShopFilters,
+} from "@/lib/search";
 import { categories, offers } from "@/data/offers";
 import { FilterOptions } from "@/types/offer";
+import { Shop } from "@/types/shop";
 import { cn } from "@/lib/utils";
 
 export default function Index() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [filters, setFilters] = useState<FilterOptions>({});
+  const [shopFilters, setShopFilters] = useState<ShopFilters>({});
   const [displayedOffers, setDisplayedOffers] = useState(offers);
+  const [displayedShops, setDisplayedShops] = useState<Shop[]>([]);
+  const [showingShops, setShowingShops] = useState(false);
+  const [searchType, setSearchType] = useState<"offers" | "shops" | "mixed">(
+    "offers",
+  );
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showFilters, setShowFilters] = useState(false);
 
@@ -41,32 +64,47 @@ export default function Index() {
   const discountParam = searchParams.get("discount");
   const vendorParam = searchParams.get("vendor");
 
+  const { cities, states } = getLocationSuggestions();
+
   useEffect(() => {
-    let filtered = offers;
+    let filteredOffers = offers;
+    let filteredShops: Shop[] = [];
+    let currentSearchType: "offers" | "shops" | "mixed" = "offers";
+    let currentShowingShops = false;
 
     // Handle URL parameters
     if (searchQuery) {
-      filtered = searchOffers(searchQuery);
+      const searchResults = performSearch(searchQuery, shopFilters);
+      filteredOffers = searchResults.offers;
+      filteredShops = searchResults.shops;
+      currentSearchType = searchResults.searchType;
+      currentShowingShops =
+        searchResults.isShopSearch || searchResults.searchType === "mixed";
     } else if (categoryParam) {
-      filtered = filterOffers({ category: categoryParam });
+      filteredOffers = filterOffers({ category: categoryParam });
     } else if (featuredParam) {
-      filtered = getFeaturedOffers();
+      filteredOffers = getFeaturedOffers();
     } else if (newParam) {
-      filtered = offers.filter((offer) => offer.isNew);
+      filteredOffers = offers.filter((offer) => offer.isNew);
     } else if (discountParam) {
-      filtered = offers.filter((offer) => offer.discount && offer.discount > 0);
+      filteredOffers = offers.filter(
+        (offer) => offer.discount && offer.discount > 0,
+      );
     } else if (vendorParam) {
-      filtered = offers.filter(
+      filteredOffers = offers.filter(
         (offer) =>
           offer.vendor.name.toLowerCase() ===
           decodeURIComponent(vendorParam).toLowerCase(),
       );
     } else {
       // Apply current filters
-      filtered = filterOffers(filters);
+      filteredOffers = filterOffers(filters);
     }
 
-    setDisplayedOffers(filtered);
+    setDisplayedOffers(filteredOffers);
+    setDisplayedShops(filteredShops);
+    setShowingShops(currentShowingShops);
+    setSearchType(currentSearchType);
   }, [
     searchQuery,
     categoryParam,
@@ -75,6 +113,7 @@ export default function Index() {
     discountParam,
     vendorParam,
     filters,
+    shopFilters,
   ]);
 
   const handleFiltersChange = (newFilters: FilterOptions) => {
