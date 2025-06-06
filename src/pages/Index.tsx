@@ -590,10 +590,18 @@ export default function Index() {
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">
                     No {showingShops ? 'shops' : 'offers'} found
                   </h3>
-                  <p className="text-gray-600 mb-4">
-                    Try adjusting your filters or search terms
                   </p>
-                  <Button onClick={clearFilters}>Clear all filters</Button>
+                  <Button
+                    onClick={() => {
+                      if (showingShops) {
+                        setShopFilters({});
+                      } else {
+                        clearFilters();
+                      }
+                    }}
+                  >
+                    Clear all filters
+                  </Button>
                 </div>
               )}
             </div>
