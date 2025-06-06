@@ -100,7 +100,7 @@ export function SearchSuggestions({
     const searchIntent = detectSearchIntent(query);
 
     // Search offers (limit based on intent)
-    const offerLimit = searchIntent === 'shops' ? 2 : 4;
+    const offerLimit = searchIntent === "shops" ? 2 : 4;
     const matchingOffers = searchOffers(query).slice(0, offerLimit);
 
     matchingOffers.forEach((offer) => {
@@ -119,7 +119,7 @@ export function SearchSuggestions({
     });
 
     // Search shops (show more if it's a shop-focused search)
-    const shopLimit = searchIntent === 'shops' ? 5 : 3;
+    const shopLimit = searchIntent === "shops" ? 5 : 3;
     const matchingShops = searchShops(query).slice(0, shopLimit);
 
     matchingShops.forEach((shop) => {
@@ -134,7 +134,6 @@ export function SearchSuggestions({
         verified: shop.verified,
         location: shop.location,
       });
-    });
     });
 
     // Search categories
