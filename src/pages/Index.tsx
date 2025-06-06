@@ -128,7 +128,6 @@ export default function Index() {
   };
 
   const featuredOffers = getFeaturedOffers().slice(0, 3);
-  const trendingCategories = categories.slice(0, 6);
 
   const isHomePage =
     !searchQuery &&
@@ -301,33 +300,91 @@ export default function Index() {
                       <div className="space-y-4 mb-6">
                         <h4 className="font-medium text-sm">Location</h4>
                         <div className="space-y-3">
-                      <Select
-                        value={shopFilters.rating?.toString() || "any"}
-                        onValueChange={(value) =>
-                          setShopFilters(prev => ({ ...prev, rating: value === "any" ? undefined : Number(value) }))
-                        }
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Any Rating" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="any">Any Rating</SelectItem>
-                          <SelectItem value="4">4+ Stars</SelectItem>
-                          <SelectItem value="4.5">4.5+ Stars</SelectItem>
-                          <SelectItem value="5">5 Stars</SelectItem>
-                        </SelectContent>
-                      </Select>
+                          <Select
+                            value={shopFilters.city || "all"}
+                            onValueChange={(value) =>
+                              setShopFilters((prev) => ({
+                                ...prev,
+                                city: value === "all" ? undefined : value,
+                              }))
+                            }
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select City" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="all">All Cities</SelectItem>
+                              {cities.map((city) => (
+                                <SelectItem key={city} value={city}>
+                                  {city}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+
+                          <Select
+                            value={shopFilters.state || "all"}
+                            onValueChange={(value) =>
+                              setShopFilters((prev) => ({
+                                ...prev,
+                                state: value === "all" ? undefined : value,
+                              }))
+                            }
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select State" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="all">All States</SelectItem>
+                              {states.map((state) => (
+                                <SelectItem key={state} value={state}>
+                                  {state}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+
+                      {/* Shop Business Type */}
+                      <div className="space-y-4 mb-6">
+                        <h4 className="font-medium text-sm">Business Type</h4>
+                        <Select
+                          value={shopFilters.businessType || "all"}
+                          onValueChange={(value) =>
+                            setShopFilters((prev) => ({
+                              ...prev,
+                              businessType:
+                                value === "all" ? undefined : (value as any),
+                            }))
+                          }
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="All Types" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="all">All Types</SelectItem>
+                            <SelectItem value="individual">
+                              Individual
+                            </SelectItem>
+                            <SelectItem value="business">Business</SelectItem>
+                            <SelectItem value="enterprise">
+                              Enterprise
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
                       </div>
 
                       {/* Shop Rating Filter */}
                       <div className="space-y-4 mb-6">
                         <h4 className="font-medium text-sm">Minimum Rating</h4>
                         <Select
-                          value={shopFilters.rating?.toString() || ""}
+                          value={shopFilters.rating?.toString() || "any"}
                           onValueChange={(value) =>
                             setShopFilters((prev) => ({
                               ...prev,
-                              rating: value ? Number(value) : undefined,
+                              rating:
+                                value === "any" ? undefined : Number(value),
                             }))
                           }
                         >
@@ -335,7 +392,7 @@ export default function Index() {
                             <SelectValue placeholder="Any Rating" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="">Any Rating</SelectItem>
+                            <SelectItem value="any">Any Rating</SelectItem>
                             <SelectItem value="4">4+ Stars</SelectItem>
                             <SelectItem value="4.5">4.5+ Stars</SelectItem>
                             <SelectItem value="5">5 Stars</SelectItem>
@@ -401,18 +458,18 @@ export default function Index() {
                                 : "All Offers"}
                     </h2>
                     <div className="flex items-center gap-4 text-sm text-gray-600">
-                      {searchType === "mixed" || searchType === "offers" ? (
+                      {(searchType === "mixed" || searchType === "offers") && (
                         <span>
                           {displayedOffers.length}{" "}
                           {displayedOffers.length === 1 ? "offer" : "offers"}
                         </span>
-                      ) : null}
-                      {searchType === "mixed" || searchType === "shops" ? (
+                      )}
+                      {(searchType === "mixed" || searchType === "shops") && (
                         <span>
                           {displayedShops.length}{" "}
                           {displayedShops.length === 1 ? "shop" : "shops"}
                         </span>
-                      ) : null}
+                      )}
                     </div>
                   </div>
 
@@ -522,8 +579,8 @@ export default function Index() {
                 )}
 
                 {/* No Results */}
-                {(!showingShops && displayedOffers.length === 0) ||
-                (showingShops && displayedShops.length === 0) ? (
+                {((!showingShops && displayedOffers.length === 0) ||
+                  (showingShops && displayedShops.length === 0)) && (
                   <div className="text-center py-12">
                     <div className="text-gray-400 mb-4">
                       {showingShops ? (
@@ -550,7 +607,7 @@ export default function Index() {
                       Clear all filters
                     </Button>
                   </div>
-                ) : null}
+                )}
               </div>
             </div>
           </div>
