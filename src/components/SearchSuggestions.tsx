@@ -20,6 +20,7 @@ import { offers } from "@/data/offers";
 import { categories } from "@/data/offers";
 import { shops } from "@/data/shops";
 import { formatPrice } from "@/lib/offers";
+import { searchShops, searchOffers, detectSearchIntent } from "@/lib/search";
 
 interface SearchSuggestion {
   id: string;
@@ -96,17 +97,11 @@ export function SearchSuggestions({
     const lowerQuery = query.toLowerCase();
     const newSuggestions: SearchSuggestion[] = [];
 
-    // Search offers
-    const matchingOffers = offers
-      .filter(
-        (offer) =>
-          offer.title.toLowerCase().includes(lowerQuery) ||
-          offer.shortDescription.toLowerCase().includes(lowerQuery) ||
-          offer.category.toLowerCase().includes(lowerQuery) ||
-          offer.vendor.name.toLowerCase().includes(lowerQuery) ||
-          offer.tags.some((tag) => tag.toLowerCase().includes(lowerQuery)),
-      )
-      .slice(0, 4);
+    const searchIntent = detectSearchIntent(query);
+
+    // Search offers (limit based on intent)
+    const offerLimit = searchIntent === 'shops' ? 2 : 4;
+    const matchingOffers = searchOffers(query).slice(0, offerLimit);
 
     matchingOffers.forEach((offer) => {
       newSuggestions.push({
@@ -123,24 +118,15 @@ export function SearchSuggestions({
       });
     });
 
-    // Search shops
-    const matchingShops = shops
-      .filter(
-        (shop) =>
-          shop.name.toLowerCase().includes(lowerQuery) ||
-          shop.description.toLowerCase().includes(lowerQuery) ||
-          shop.categories.some((cat) =>
-            cat.toLowerCase().includes(lowerQuery),
-          ) ||
-          shop.location.toLowerCase().includes(lowerQuery),
-      )
-      .slice(0, 3);
+    // Search shops (show more if it's a shop-focused search)
+    const shopLimit = searchIntent === 'shops' ? 5 : 3;
+    const matchingShops = searchShops(query).slice(0, shopLimit);
 
     matchingShops.forEach((shop) => {
       newSuggestions.push({
         id: shop.id,
         title: shop.name,
-        subtitle: `${shop.stats.followerCount} followers • ${shop.totalOffers} offers`,
+        subtitle: `${shop.stats?.followerCount || 0} followers • ${shop.totalOffers} offers • ${shop.city}, ${shop.state}`,
         type: "shop",
         icon: <Store className="w-4 h-4 text-purple-500" />,
         link: `/shop/${shop.id}`,
@@ -148,6 +134,7 @@ export function SearchSuggestions({
         verified: shop.verified,
         location: shop.location,
       });
+    });
     });
 
     // Search categories
