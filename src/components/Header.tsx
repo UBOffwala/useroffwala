@@ -419,6 +419,62 @@ export function Header() {
                     </Link>
                   </div>
 
+                  {/* Mobile Authentication */}
+                  <div className="pt-4 border-t space-y-2">
+                    {isLoggedIn ? (
+                      <>
+                        <div className="px-3 py-2 text-sm">
+                          <div className="font-medium">
+                            {user.firstName} {user.lastName}
+                          </div>
+                          <div className="text-gray-500 text-xs">
+                            {user.email}
+                          </div>
+                        </div>
+                        <Link
+                          to="/profile"
+                          className="flex items-center px-3 py-2 text-sm font-medium hover:bg-gray-100 rounded transition-colors"
+                        >
+                          <User className="mr-2 h-4 w-4" />
+                          Profile
+                        </Link>
+                        <Link
+                          to="/wishlist"
+                          className="flex items-center px-3 py-2 text-sm font-medium hover:bg-gray-100 rounded transition-colors"
+                        >
+                          <Heart className="mr-2 h-4 w-4" />
+                          Wishlist
+                        </Link>
+                        <button
+                          onClick={() => {
+                            logout();
+                            navigate("/");
+                          }}
+                          className="flex items-center w-full px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded transition-colors"
+                        >
+                          <LogOut className="mr-2 h-4 w-4" />
+                          Sign out
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <Link
+                          to="/auth/login"
+                          className="flex items-center px-3 py-2 text-sm font-medium hover:bg-gray-100 rounded transition-colors"
+                        >
+                          <User className="mr-2 h-4 w-4" />
+                          Sign In
+                        </Link>
+                        <Link
+                          to="/auth/register"
+                          className="block px-3 py-2 text-sm font-medium bg-gradient-to-r from-[#1890ff] to-[#722ed1] text-white rounded transition-colors"
+                        >
+                          Create Account
+                        </Link>
+                      </>
+                    )}
+                  </div>
+
                   {/* Mobile Location */}
                   <div className="pt-4 border-t">
                     <LocationSelector />
