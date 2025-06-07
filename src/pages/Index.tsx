@@ -43,6 +43,8 @@ import { categories, offers } from "@/data/offers";
 import { FilterOptions } from "@/types/offer";
 import { Shop } from "@/types/shop";
 import { cn } from "@/lib/utils";
+import { useUser } from "@/contexts/UserContext";
+import { GuestPrompt } from "@/components/GuestPrompt";
 
 export default function Index() {
   const [searchParams, setSearchParams] = useSearchParams();

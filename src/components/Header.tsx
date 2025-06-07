@@ -17,6 +17,14 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
   Sheet,
   SheetContent,
   SheetDescription,
@@ -48,6 +56,8 @@ import {
   ArrowRight,
   X,
   Loader2,
+  LogOut,
+  Settings,
 } from "lucide-react";
 import { categories } from "@/data/offers";
 import { cn } from "@/lib/utils";
@@ -59,7 +69,7 @@ export function Header() {
   const searchRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const { wishlistCount } = useWishlist();
-  const { user, isLoggedIn } = useUser();
+  const { user, isLoggedIn, logout } = useUser();
 
   // Close suggestions when clicking outside
   useEffect(() => {
@@ -284,14 +294,65 @@ export function Header() {
             </Link>
 
             {/* User Profile */}
-            <Link to={isLoggedIn ? "/profile" : "/profile"}>
-              <Button variant="ghost" size="sm" className="gap-2">
-                <User className="h-5 w-5" />
-                <span className="hidden lg:inline">
-                  {isLoggedIn ? user.firstName : "Sign In"}
-                </span>
-              </Button>
-            </Link>
+            {isLoggedIn ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" className="gap-2">
+                    <User className="h-5 w-5" />
+                    <span className="hidden lg:inline">{user.firstName}</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuLabel>
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">
+                        {user.firstName} {user.lastName}
+                      </p>
+                      <p className="text-xs leading-none text-gray-500">
+                        {user.email}
+                      </p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link to="/profile" className="flex items-center">
+                      <User className="mr-2 h-4 w-4" />
+                      Profile
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/wishlist" className="flex items-center">
+                      <Heart className="mr-2 h-4 w-4" />
+                      Wishlist
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/tickets" className="flex items-center">
+                      <Settings className="mr-2 h-4 w-4" />
+                      Support
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={() => {
+                      logout();
+                      navigate("/");
+                    }}
+                    className="text-red-600 focus:text-red-600"
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Sign out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link to="/auth/login">
+                <Button variant="ghost" size="sm" className="gap-2">
+                  <User className="h-5 w-5" />
+                  <span className="hidden lg:inline">Sign In</span>
+                </Button>
+              </Link>
+            )}
 
             {/* Mobile Menu */}
             <Sheet>
@@ -356,6 +417,62 @@ export function Header() {
                     >
                       Support
                     </Link>
+                  </div>
+
+                  {/* Mobile Authentication */}
+                  <div className="pt-4 border-t space-y-2">
+                    {isLoggedIn ? (
+                      <>
+                        <div className="px-3 py-2 text-sm">
+                          <div className="font-medium">
+                            {user.firstName} {user.lastName}
+                          </div>
+                          <div className="text-gray-500 text-xs">
+                            {user.email}
+                          </div>
+                        </div>
+                        <Link
+                          to="/profile"
+                          className="flex items-center px-3 py-2 text-sm font-medium hover:bg-gray-100 rounded transition-colors"
+                        >
+                          <User className="mr-2 h-4 w-4" />
+                          Profile
+                        </Link>
+                        <Link
+                          to="/wishlist"
+                          className="flex items-center px-3 py-2 text-sm font-medium hover:bg-gray-100 rounded transition-colors"
+                        >
+                          <Heart className="mr-2 h-4 w-4" />
+                          Wishlist
+                        </Link>
+                        <button
+                          onClick={() => {
+                            logout();
+                            navigate("/");
+                          }}
+                          className="flex items-center w-full px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded transition-colors"
+                        >
+                          <LogOut className="mr-2 h-4 w-4" />
+                          Sign out
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <Link
+                          to="/auth/login"
+                          className="flex items-center px-3 py-2 text-sm font-medium hover:bg-gray-100 rounded transition-colors"
+                        >
+                          <User className="mr-2 h-4 w-4" />
+                          Sign In
+                        </Link>
+                        <Link
+                          to="/auth/register"
+                          className="block px-3 py-2 text-sm font-medium bg-gradient-to-r from-[#1890ff] to-[#722ed1] text-white rounded transition-colors"
+                        >
+                          Create Account
+                        </Link>
+                      </>
+                    )}
                   </div>
 
                   {/* Mobile Location */}
