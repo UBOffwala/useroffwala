@@ -40,131 +40,129 @@ const queryClient = new QueryClient({
 });
 
 const App = () => (
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <UserProvider>
-        <WishlistProvider>
-          <TicketProvider>
-            <LocationProvider>
-              <ReviewProvider>
-                <ShopProvider>
-                  <ShopReviewProvider>
-                    <TooltipProvider>
-                      <Toaster />
-                      <Sonner />
-                      <BrowserRouter>
-                        <Routes>
-                          {/* Public routes */}
-                          <Route path="/" element={<Index />} />
-                          <Route path="/categories" element={<Categories />} />
-                          <Route path="/shops" element={<Shops />} />
-                          <Route path="/location" element={<LocationPage />} />
+  <QueryClientProvider client={queryClient}>
+    <UserProvider>
+      <WishlistProvider>
+        <TicketProvider>
+          <LocationProvider>
+            <ReviewProvider>
+              <ShopProvider>
+                <ShopReviewProvider>
+                  <TooltipProvider>
+                    <Toaster />
+                    <Sonner />
+                    <BrowserRouter>
+                      <Routes>
+                        {/* Public routes */}
+                        <Route path="/" element={<Index />} />
+                        <Route path="/categories" element={<Categories />} />
+                        <Route path="/shops" element={<Shops />} />
+                        <Route path="/location" element={<LocationPage />} />
 
-                          {/* Auth routes - only accessible when not logged in */}
-                          <Route
-                            path="/auth/login"
-                            element={
-                              <ProtectedRoute requireAuth={false}>
-                                <Login />
-                              </ProtectedRoute>
-                            }
-                          />
-                          <Route
-                            path="/auth/register"
-                            element={
-                              <ProtectedRoute requireAuth={false}>
-                                <Register />
-                              </ProtectedRoute>
-                            }
-                          />
-                          <Route
-                            path="/auth/forgot-password"
-                            element={
-                              <ProtectedRoute requireAuth={false}>
-                                <ForgotPassword />
-                              </ProtectedRoute>
-                            }
-                          />
-                          <Route
-                            path="/auth/otp-verification"
-                            element={<OTPVerification />}
-                          />
-                          <Route
-                            path="/auth/reset-password"
-                            element={<ResetPassword />}
-                          />
+                        {/* Auth routes - only accessible when not logged in */}
+                        <Route
+                          path="/auth/login"
+                          element={
+                            <ProtectedRoute requireAuth={false}>
+                              <Login />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="/auth/register"
+                          element={
+                            <ProtectedRoute requireAuth={false}>
+                              <Register />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="/auth/forgot-password"
+                          element={
+                            <ProtectedRoute requireAuth={false}>
+                              <ForgotPassword />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="/auth/otp-verification"
+                          element={<OTPVerification />}
+                        />
+                        <Route
+                          path="/auth/reset-password"
+                          element={<ResetPassword />}
+                        />
 
-                          {/* Protected routes - require authentication */}
-                          <Route
-                            path="/offer/:id"
-                            element={
-                              <ProtectedRoute>
-                                <OfferDetails />
-                              </ProtectedRoute>
-                            }
-                          />
-                          <Route
-                            path="/shop/:id"
-                            element={
-                              <ProtectedRoute>
-                                <ShopPage />
-                              </ProtectedRoute>
-                            }
-                          />
-                          <Route
-                            path="/profile"
-                            element={
-                              <ProtectedRoute>
-                                <Profile />
-                              </ProtectedRoute>
-                            }
-                          />
-                          <Route
-                            path="/wishlist"
-                            element={
-                              <ProtectedRoute>
-                                <Wishlist />
-                              </ProtectedRoute>
-                            }
-                          />
-                          <Route
-                            path="/tickets"
-                            element={
-                              <ProtectedRoute>
-                                <Tickets />
-                              </ProtectedRoute>
-                            }
-                          />
-                          <Route
-                            path="/tickets/new"
-                            element={
-                              <ProtectedRoute>
-                                <CreateTicket />
-                              </ProtectedRoute>
-                            }
-                          />
-                          <Route
-                            path="/tickets/:id"
-                            element={
-                              <ProtectedRoute>
-                                <TicketDetails />
-                              </ProtectedRoute>
-                            }
-                          />
-                          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                          <Route path="*" element={<NotFound />} />
-                        </Routes>
-                      </BrowserRouter>
-                    </TooltipProvider>
-                  </ShopReviewProvider>
-                </ShopProvider>
-              </ReviewProvider>
-            </LocationProvider>
-          </TicketProvider>
-        </WishlistProvider>
-      </UserProvider>
-    </QueryClientProvider>
-  </React.StrictMode>
+                        {/* Protected routes - require authentication */}
+                        <Route
+                          path="/offer/:id"
+                          element={
+                            <ProtectedRoute>
+                              <OfferDetails />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="/shop/:id"
+                          element={
+                            <ProtectedRoute>
+                              <ShopPage />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="/profile"
+                          element={
+                            <ProtectedRoute>
+                              <Profile />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="/wishlist"
+                          element={
+                            <ProtectedRoute>
+                              <Wishlist />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="/tickets"
+                          element={
+                            <ProtectedRoute>
+                              <Tickets />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="/tickets/new"
+                          element={
+                            <ProtectedRoute>
+                              <CreateTicket />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="/tickets/:id"
+                          element={
+                            <ProtectedRoute>
+                              <TicketDetails />
+                            </ProtectedRoute>
+                          }
+                        />
+                        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                        <Route path="*" element={<NotFound />} />
+                      </Routes>
+                    </BrowserRouter>
+                  </TooltipProvider>
+                </ShopReviewProvider>
+              </ShopProvider>
+            </ReviewProvider>
+          </LocationProvider>
+        </TicketProvider>
+      </WishlistProvider>
+    </UserProvider>
+  </QueryClientProvider>
 );
 
 export default App;
