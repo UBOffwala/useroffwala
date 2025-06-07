@@ -52,12 +52,19 @@ export default function ForgotPassword() {
     setError("");
 
     try {
-      // Simulate API call
+      // Simulate API call for sending OTP
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
-      setIsEmailSent(true);
+      // Navigate to OTP verification instead of showing email sent state
+      navigate("/auth/otp-verification", {
+        state: {
+          email,
+          type: "password-reset",
+          from: "/auth/forgot-password",
+        },
+      });
     } catch (error) {
-      setError("Failed to send reset email. Please try again.");
+      setError("Failed to send OTP. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -194,7 +201,8 @@ export default function ForgotPassword() {
                   Forgot password?
                 </CardTitle>
                 <CardDescription>
-                  No worries, we'll send you reset instructions
+                  Enter your email and we'll send you an OTP to reset your
+                  password
                 </CardDescription>
               </div>
             </CardHeader>
@@ -231,7 +239,7 @@ export default function ForgotPassword() {
                     />
                   </div>
                   <p className="text-sm text-gray-500">
-                    Enter the email address associated with your account
+                    We'll send a 6-digit OTP to this email for verification
                   </p>
                 </div>
 
@@ -243,12 +251,12 @@ export default function ForgotPassword() {
                   {isLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Sending...
+                      Sending OTP...
                     </>
                   ) : (
                     <>
                       <Send className="mr-2 h-4 w-4" />
-                      Send reset email
+                      Send OTP
                     </>
                   )}
                 </Button>
