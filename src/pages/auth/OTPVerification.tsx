@@ -165,12 +165,24 @@ export default function OTPVerification() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => navigate(-1)}
+                  onClick={() => {
+                    if (verificationType === "registration") {
+                      navigate("/auth/register/step-2");
+                    } else if (verificationType === "password-reset") {
+                      navigate("/auth/forgot-password");
+                    } else {
+                      navigate(-1);
+                    }
+                  }}
                   className="p-0 h-auto"
                 >
                   <ArrowLeft className="h-4 w-4" />
                 </Button>
-                <span className="text-sm text-gray-600">Back</span>
+                <span className="text-sm text-gray-600">
+                  {verificationType === "registration"
+                    ? "Back to registration"
+                    : "Back to forgot password"}
+                </span>
               </div>
 
               <div className="text-center">
@@ -186,12 +198,17 @@ export default function OTPVerification() {
                 </CardTitle>
                 <CardDescription>
                   {verificationType === "registration"
-                    ? "We've sent a 6-digit code to"
-                    : "Enter the 6-digit code sent to"}
+                    ? "We've sent a 6-digit verification code to"
+                    : "We've sent a 6-digit OTP to"}
                 </CardDescription>
                 <p className="text-sm font-medium text-gray-900 mt-1">
                   {email}
                 </p>
+                {verificationType === "password-reset" && (
+                  <p className="text-xs text-gray-600 mt-2">
+                    Once verified, you'll be able to reset your password
+                  </p>
+                )}
               </div>
             </CardHeader>
 
@@ -280,12 +297,14 @@ export default function OTPVerification() {
                   <Link
                     to={
                       verificationType === "registration"
-                        ? "/auth/register"
+                        ? "/auth/register/step-2"
                         : "/auth/forgot-password"
                     }
                     className="text-[#1890ff] hover:text-[#1890ff]/80 font-medium"
                   >
-                    Go back
+                    {verificationType === "registration"
+                      ? "Go back to registration"
+                      : "Change email"}
                   </Link>
                 </p>
               </div>

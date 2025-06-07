@@ -28,6 +28,7 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 // Lazy load auth components to isolate potential issues
 const Login = React.lazy(() => import("./pages/auth/Login"));
 const Register = React.lazy(() => import("./pages/auth/Register"));
+const RegisterStep2 = React.lazy(() => import("./pages/auth/RegisterStep2"));
 const ForgotPassword = React.lazy(() => import("./pages/auth/ForgotPassword"));
 const OTPVerification = React.lazy(
   () => import("./pages/auth/OTPVerification"),
@@ -89,6 +90,14 @@ const App = () => {
                               element={
                                 <ProtectedRoute requireAuth={false}>
                                   <Register />
+                                </ProtectedRoute>
+                              }
+                            />
+                            <Route
+                              path="/auth/register/step-2"
+                              element={
+                                <ProtectedRoute requireAuth={false}>
+                                  <RegisterStep2 />
                                 </ProtectedRoute>
                               }
                             />

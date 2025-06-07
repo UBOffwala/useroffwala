@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useUser } from "@/contexts/UserContext";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import {
@@ -26,6 +25,7 @@ import {
   AlertCircle,
   Loader2,
   Check,
+  ArrowRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -44,7 +44,6 @@ export default function Register() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useUser();
   const navigate = useNavigate();
 
   const passwordStrength = {
@@ -91,6 +90,9 @@ export default function Register() {
       newErrors.password = "Password is required";
     } else if (formData.password.length < 8) {
       newErrors.password = "Password must be at least 8 characters";
+    } else if (passwordStrengthScore < 3) {
+      newErrors.password =
+        "Password is too weak. Please include uppercase, lowercase, numbers";
     }
 
     if (!formData.confirmPassword) {
@@ -124,39 +126,21 @@ export default function Register() {
 
     try {
       // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      // Create user data
-      const userData = {
-        id: "user-" + Date.now(),
+      // Store basic details and proceed to step 2
+      const basicDetails = {
         firstName: formData.firstName.trim(),
         lastName: formData.lastName.trim(),
         email: formData.email,
         phone: formData.phone,
-        bio: "",
-        address: {
-          street: "",
-          apartment: "",
-          city: "",
-          state: "",
-          zipCode: "",
-          country: "United States",
-        },
-        preferences: {
-          newsletter: formData.subscribeNewsletter,
-          notifications: true,
-          marketing: formData.subscribeNewsletter,
-          language: "en",
-          currency: "USD",
-        },
-        joinedDate: new Date().toISOString(),
-        isVerified: false, // Will be verified after OTP
+        password: formData.password,
+        subscribeNewsletter: formData.subscribeNewsletter,
       };
 
-      login(userData);
-      // Redirect to OTP verification
-      navigate("/auth/otp-verification", {
-        state: { email: formData.email, type: "registration" },
+      // Navigate to step 2 with the basic details
+      navigate("/auth/register/step-2", {
+        state: { basicDetails },
       });
     } catch (error) {
       setErrors({ submit: "Registration failed. Please try again." });
@@ -194,8 +178,27 @@ export default function Register() {
                 Create account
               </CardTitle>
               <CardDescription>
-                Join OfferHub to discover amazing deals
+                Step 1 of 2: Enter your basic details
               </CardDescription>
+
+              {/* Progress Indicator */}
+              <div className="flex items-center justify-center space-x-2 mt-4">
+                <div className="flex items-center">
+                  <div className="w-8 h-8 bg-[#1890ff] text-white rounded-full flex items-center justify-center text-sm font-medium">
+                    1
+                  </div>
+                  <span className="ml-2 text-sm font-medium text-[#1890ff]">
+                    Basic Details
+                  </span>
+                </div>
+                <div className="flex-1 h-px bg-gray-300 mx-4"></div>
+                <div className="flex items-center">
+                  <div className="w-8 h-8 bg-gray-300 text-gray-500 rounded-full flex items-center justify-center text-sm font-medium">
+                    2
+                  </div>
+                  <span className="ml-2 text-sm text-gray-500">Address</span>
+                </div>
+              </div>
             </CardHeader>
 
             <CardContent className="space-y-4">
@@ -209,7 +212,7 @@ export default function Register() {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="firstName">First Name</Label>
+                    <Label htmlFor="firstName">First Name *</Label>
                     <div className="relative">
                       <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                       <Input
@@ -234,7 +237,7 @@ export default function Register() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="lastName">Last Name</Label>
+                    <Label htmlFor="lastName">Last Name *</Label>
                     <Input
                       id="lastName"
                       type="text"
@@ -256,7 +259,7 @@ export default function Register() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="email">Email Address *</Label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                     <Input
@@ -281,7 +284,7 @@ export default function Register() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="phone">Phone Number</Label>
+                  <Label htmlFor="phone">Phone Number *</Label>
                   <div className="relative">
                     <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                     <Input
@@ -306,7 +309,7 @@ export default function Register() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="password">Password</Label>
+                  <Label htmlFor="password">Password *</Label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                     <Input
@@ -408,7 +411,7 @@ export default function Register() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="confirmPassword">Confirm Password</Label>
+                  <Label htmlFor="confirmPassword">Confirm Password *</Label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                     <Input
@@ -513,10 +516,13 @@ export default function Register() {
                   {isLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Creating account...
+                      Processing...
                     </>
                   ) : (
-                    "Create account"
+                    <>
+                      Continue to Address
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </>
                   )}
                 </Button>
               </form>
